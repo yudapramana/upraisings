@@ -59,27 +59,33 @@ class CreateUsersSeeder extends Seeder
         $user->load('ewallet');
         $ewallet = $user->ewallet;
 
-        Transaction::create([
-            'ewallet_id' => $ewallet->id,
-            'type' => 'Top-up',
-            'operation' => 'plus',
-            'last_saldo' => $ewallet->balance,
-            'amount' => 200000
-        ]);
-
+        $payment_method = 'bank_transfer';
         $ewallet->balance += 200000;
         $ewallet->save();
-
         Transaction::create([
             'ewallet_id' => $ewallet->id,
             'type' => 'Top-up',
+            'method' => 'bank_transfer',
             'operation' => 'plus',
             'last_saldo' => $ewallet->balance,
-            'amount' => 100000
+            'amount' => 200000,
+            'description' => 'Top-up via ' . $payment_method,
         ]);
 
+        
         $ewallet->balance += 100000;
         $ewallet->save();
+        Transaction::create([
+            'ewallet_id' => $ewallet->id,
+            'type' => 'Top-up',
+            'method' => 'bank_transfer',
+            'operation' => 'plus',
+            'last_saldo' => $ewallet->balance,
+            'amount' => 100000,
+            'description' => 'Top-up via ' . $payment_method,
+        ]);
+
+        
 
     }
 }

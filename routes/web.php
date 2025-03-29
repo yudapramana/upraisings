@@ -9,8 +9,11 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\SubmissionListController;
 use App\Http\Controllers\HistoryListController;
+use App\Http\Controllers\Partner\ProfileController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\WalletController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,13 +35,25 @@ Route::get('register-customer', [RegisterController::class, 'customer'])->name('
 Route::post('store-customer', [RegisterController::class, 'storeCustomer'])->name('store.customer');
 
 
-Route::middleware(['auth', 'user-access:partner'])->group(function () {
-    Route::get('partner', [PartnerController::class, 'index'])->name('partner.home');
+Route::group(['prefix' => 'partner', 'middleware' => ['auth', 'user-access:partner']], function(){
+    Route::get('/', [PartnerController::class, 'index'])->name('partner.home');
+
+    Route::get('/profile', [ProfileController::class, 'index'])->name('partner.profile');
+    Route::post('//profile/update', [ProfileController::class, 'update'])->name('partner.profile.update');
+
+    Route::get('/partner/withdraw', [PartnerController::class, 'withdraw'])->name('partner.withdraw');
+    Route::post('/partner/withdraw/process', [PartnerController::class, 'withdrawProcess'])->name('partner.withdraw.process');
 });
 
 
-Route::middleware(['auth', 'user-access:customer'])->group(function () {
-    Route::get('customer', [CustomerController::class, 'index'])->name('customer.home');
+// Route::middleware(['auth', 'user-access:customer'])->group(function () {
+Route::group(['prefix' => 'customer', 'middleware' => ['auth', 'user-access:customer']], function(){
+    Route::get('/', [CustomerController::class, 'index'])->name('customer.home');
+    Route::get('/topup', [WalletController::class, 'showTopUpForm'])->name('topup');
+    Route::post('/topup', [WalletController::class, 'processTopUp'])->name('topup.process');
+
+    Route::get('/pay', [PaymentController::class, 'showPaymentForm'])->name('pay');
+    Route::post('/pay', [PaymentController::class, 'processPayment'])->name('pay.process');
 });
 
 /*--------------------------------------------------------------------------------------

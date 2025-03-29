@@ -1,91 +1,181 @@
 @extends('landing.layouts.layout')
-@section('title', $title)
+@section('title', 'Dashboard Mitra Angkot')
 
+@section('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        .list {
+            /* background: #bab9b9; */
+            display: grid;
+            grid-gap: 5px;
+            padding: 5px 0;
+            /* height: 180px; */
+            /* overflow-y: auto; */
+        }
+
+        .list div[class^="item"] {
+            display: flex;
+            justify-content: space-between;
+            /* background: #e3e1e1; */
+            padding: 10px 0;
+            border-top: 1px solid rgba(0, 0, 0, .125);
+        }
+
+        .list div[class^="section"] {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .list .icon {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+
+        .list .icon.up {
+            color: #00ff00;
+            transform: rotateZ(30deg);
+        }
+
+        .list .icon.down {
+            color: #ff0000;
+            transform: rotateZ(-150deg);
+        }
+
+        .list .description {
+            color: #7d7d7d;
+        }
+
+        .list .signal {
+            font-weight: bold;
+        }
+
+        .list .signal.positive {
+            color: #00ff00;
+        }
+
+        .list .signal.negative {
+            color: #ff0000;
+        }
+
+        .card-summary {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .card-summary h6 {
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .card-summary .amount {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+@endsection
 
 @section('content')
     <div class="content-wrapper">
-        <!-- ============================================================== -->
-        <!-- Demos part -->
-        <!-- ============================================================== -->
         <section class="spacer bg-light">
-            <div class="container">
-                <div class="row justify-content-md-center pt-5">
-                    <div class="col-md-9 text-center">
-                        <h2 class="text-dark">Bayar Angkot Lebih Mudah untuk
-                            <span class="font-bold">Perjalanan Cepat</span> & <span class="font-bold">Nyaman</span> dengan <span class="border-bottom border-dark">AngkotApp</span>
-
-                        </h2>
+            <div class="container pt-5">
+                <div class="row">
+                    <!-- Info Saldo Mitra -->
+                    <div class="col-md-12 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Saldo eWallet Mitra</h5>
+                                <h3 class="fw-bold text-success">Rp {{ number_format($balance, 2, ',', '.') }}</h3>
+                                <p>Status: <span class="badge bg-success">Aktif</span></p>
+                                <a href="{{ route('partner.withdraw') }}" class="btn btn-success btn-sm">Tarik Saldo</a>
+                                <a href="" class="btn btn-primary btn-sm">Riwayat Transaksi</a>
+                                <a href="{{ route('partner.profile') }}" class="btn btn-info btn-sm">Lihat Profil</a> <!-- Tambahan Button -->
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="row py-5">
-                    <!-- ============================================================== -->
-                    <!-- Lite Demo -->
-                    <!-- ============================================================== -->
-                    <div class="col-md-6">
-                        <div class="card p-2 mr-1">
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <h2 class="text-dark font-medium">Mitra Angkutan</h2>
-                                    <h4 class="text-success">Jadilah Mitra Angkutan & Nikmati Kemudahan Digital!🚖</h4>
-                                </div>
-                                {{-- <div class="live-box text-center mt-4">
-                                <img class="img-fluid" src="{{ asset('/') }}nadist/assets/images/free-demo.jpg" alt="Lite version">
-                                <div class="overlay">
-                                    <a class="btn btn-danger live-btn" href="../html/ltr/index.html" target="_blank">Live Preview</a>
-                                </div>
-                            </div> --}}
-                                <p class="text-muted mt-5 line-h33 font-16">Bergabunglah sebagai Mitra Angkutan dan rasakan kemudahan nontunai. Pembayaran lebih cepat, transparan, dan tanpa ribet!</p>
-                                <p class="p-0 m-0">Keuntungan Menjadi Mitra:</p>
-                                <div class="row text-muted">
-                                    <div class="col-md-12">
-                                        <ul class="list-unstyled listing">
-                                            <li>✅ Pembayaran Instan ke akun Anda</li>
-                                            <li>✅ Transaksi Aman & Tercatat digital</li>
-                                            <li>✅ Tanpa Uang Receh, Tanpa Ribet</li>
-                                            <li>✅ Layanan Modern untuk Pelanggan</li>
-                                        </ul>
+
+                    <!-- Ringkasan Pendapatan -->
+                    <div class="col-md-12 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Ringkasan Pendapatan</h5>
+                                <div class="row">
+                                    <div class="col-md-4 text-center">
+                                        <div class="card-summary">
+                                            <h6>Hari Ini</h6>
+                                            <div class="amount">Rp {{ number_format($totalToday, 2, ',', '.') }}</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="text-center mt-4 mb-3">
-                                    <a href="/register-partner" class="btn btn-custom btn-outline-info btn-lg" target="_blank">Daftar Angkot</a>
+                                    <div class="col-md-4 text-center">
+                                        <div class="card-summary">
+                                            <h6>Minggu Ini</h6>
+                                            <div class="amount">Rp {{ number_format($totalWeek, 2, ',', '.') }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <div class="card-summary">
+                                            <h6>Bulan Ini</h6>
+                                            <div class="amount">Rp {{ number_format($totalMonth, 2, ',', '.') }}</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- ============================================================== -->
-                    <!-- Pro Demo -->
-                    <!-- ============================================================== -->
-                    <div class="col-md-6">
-                        <div class="card pro-demo p-2 ml-1">
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <h2 class="text-info font-medium">Ayuk Ngangkot!</h2>
-                                    <h4 class="text-dark">Naik Angkot Jadi Lebih Mudah & Praktis! 🚖📲</h4>
-                                </div>
-                                {{-- <div class="live-box text-center mt-4">
-                                <img class="img-fluid" src="{{ asset('/') }}nadist/assets/images/pro-demo.jpg" alt="Pro version">
-                                <div class="overlay">
-                                    <a class="btn btn-danger live-btn" href="http://wrappixel.com/demos/admin-templates/nice-admin/landingpage/" target="_blank">Live Preview</a>
-                                </div>
-                            </div> --}}
-                                <p class="text-muted mt-5 line-h33 font-16">Lupakan repotnya cari uang pas! Dengan AngkotApp, cukup scan QR, bayar instan, dan nikmati perjalanan nyaman tanpa ribet.
+                </div>
 
-                                </p>
-                                <p class="p-0 m-0">Kenapa Harus Pakai AngkotApp?
-                                </p>
-                                <div class="row text-muted">
-                                    <div class="col-md-12">
-                                        <ul class="list-unstyled listing">
-                                            <li>✅ Praktis & Cepat </li>
-                                            <li>✅ Aman & Transparan</li>
-                                            <li>✅ Tanpa Uang Receh</li>
-                                            <li>✅ Diterima di Banyak Angkot</li>
-                                        </ul>
-                                    </div>
+                <!-- Riwayat Pembayaran -->
+                <div class="row">
+                    <div class="col-md-8 mb-4">
+                        <div class="card shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Riwayat Transaksi Terbaru</h5>
+                                <div class="list">
+
+                                    @foreach ($transactions as $key => $transaction)
+                                        <div class="item{{ $key + 1 }} px-2">
+                                            <div class="section1">
+                                                @if ($transaction->operation == 'minus')
+                                                    <div class="icon down">
+                                                        <i class="fas fa-arrow-up"></i>
+                                                    </div>
+                                                @else
+                                                    <div class="icon up">
+                                                        <i class="fas fa-arrow-up"></i>
+                                                    </div>
+                                                @endif
+                                                <div class="text">
+                                                    <div class="title">{{ $transaction->description }}</div>
+                                                    <div class="description">{{ $transaction->created_at->diffForHumans() }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="section2">
+                                                <div class="signal {{ $transaction->operation == 'plus' ? 'positive' : 'negative' }}">{{ $transaction->operation == 'plus' ? '+' : '-' }}</div>
+                                                <div class="value">Rp{{ number_format($transaction->amount, 2, ',', '.') }}</div>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
-                                <div class="text-center mt-4 mb-3">
-                                    <a href="/register-customer" class="btn btn-custom btn-info btn-lg" target="_blank">Mau naik Angkot!</a>
-                                </div>
+                                {{-- <a href="/transactions" class="btn btn-outline-secondary btn-sm">Lihat Semua</a> --}}
+                                <a href="" class="btn btn-outline-secondary d-block text-center mt-2">Lihat Semua</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifikasi & Promo -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Notifikasi & Promo</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">🎉 Promo cashback 10% untuk pembayaran angkot!</li>
+                                    <li class="list-group-item">🔔 Pembaruan sistem akan dilakukan besok pukul 23:00 WIB.</li>
+                                    <li class="list-group-item">🛠️ Fitur transfer saldo akan segera hadir!</li>
+                                </ul>
                             </div>
                         </div>
                     </div>

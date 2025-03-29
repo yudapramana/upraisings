@@ -77,8 +77,8 @@
                                 <h5 class="card-title">Saldo eWallet Anda</h5>
                                 <h3 class="fw-bold text-success">Rp {{ number_format($balance, 2, ',', '.') }}</h3>
                                 <p>Status: <span class="badge bg-success">Aktif</span></p>
-                                <a href="/topup" class="btn btn-success btn-sm">Isi Saldo</a>
-                                <a href="/pay" class="btn btn-primary btn-sm">Bayar Angkot</a>
+                                <a href="{{ route('topup') }}" class="btn btn-success btn-sm">Isi Saldo</a>
+                                <a href="{{ route('pay') }}" class="btn btn-primary btn-sm">Bayar Angkot</a>
                             </div>
                         </div>
                     </div>
@@ -106,8 +106,8 @@
                                                     </div>
                                                 @endif
                                                 <div class="text">
-                                                    <div class="title">{{ $transaction->type }}</div>
-                                                    <div class="description">{{ $transaction->created_at }}</div>
+                                                    <div class="title">{{ $transaction->description }}</div>
+                                                    <div class="description">{{ $transaction->created_at->diffForHumans() }}</div>
                                                 </div>
                                             </div>
                                             <div class="section2">
@@ -117,7 +117,8 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <a href="/transactions" class="btn btn-outline-secondary btn-sm">Lihat Semua</a>
+                                {{-- <a href="/transactions" class="btn btn-outline-secondary btn-sm">Lihat Semua</a> --}}
+                                <a href="" class="btn btn-outline-secondary d-block text-center mt-2">Lihat Semua</a>
                             </div>
                         </div>
                     </div>

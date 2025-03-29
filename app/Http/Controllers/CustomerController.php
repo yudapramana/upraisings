@@ -13,18 +13,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $user->load('ewallet');
-        $wallet = $user->ewallet;
+        $wallet = Auth::user()->ewallet;
         $balance = $wallet->balance;
-
-        // $transactions = [
-        //     [
-        //         'type' => 'Top-up',
-        //         'amount' => 200000,
-        //         'created_at' => '2025-02-01 14:23:50'
-        //     ]
-        // ];
 
         $transactions = Transaction::where('ewallet_id', $wallet->id)->get();
         return view('customer.main', [

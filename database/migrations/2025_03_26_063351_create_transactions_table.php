@@ -15,9 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('ewallet_id');
             $table->string('type');
+            $table->enum('method', ['system', 'bank_transfer', 'gopay', 'ovo', 'dana'])->default('system');
             $table->enum('operation', ['plus', 'minus']);
             $table->decimal('last_saldo', 15, 2);
             $table->decimal('amount', 15, 2);
+            $table->text('description');
+            $table->enum('status', ['pending', 'completed', 'failed'])->default('completed');
             $table->timestamps();
         });
     }

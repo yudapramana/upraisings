@@ -20,6 +20,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->enum('role', ['admin', 'approval', 'partner', 'customer'])->default('customer');
             $table->string('password');
+            // Informasi rekening untuk withdraw
+            $table->string('bank_name')->nullable(); // Nama bank (BCA, Mandiri, dll.)
+            $table->string('account_number')->nullable(); // Nomor rekening bank/e-wallet
+            $table->string('account_holder')->nullable(); // Nama pemilik rekening
             $table->rememberToken();
             $table->timestamps();
         });

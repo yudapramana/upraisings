@@ -11,5 +11,14 @@ class Transaction extends Model
 
     protected $table = 'transactions';
     
-    protected $guard = [];
+    protected $guarded = [];
+
+     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    // protected $fillable = [
+    //     'ewallet_id',
+    // ];
 }

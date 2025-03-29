@@ -26,7 +26,10 @@ class User extends Authenticatable
         'password',
         'mobile_phone',
         'city_register',
-        'role'
+        'role',
+        'bank_name',
+        'account_number',
+        'account_holder'
     ];
 
     /**
