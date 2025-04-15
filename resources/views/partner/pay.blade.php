@@ -26,7 +26,7 @@
                                     <!-- Input ID Mitra -->
                                     <div class="mb-2">
                                         <label for="mitra_id" class="form-label">ID Mitra Angkot</label>
-                                        <input type="text" class="form-control form-control-sm @error('mitra_id') is-invalid @enderror" name="mitra_id" id="mitra_id" placeholder="Masukkan ID Mitra" required>
+                                        <input readonly="readonly" type="text" class="form-control form-control-sm @error('mitra_id') is-invalid @enderror" name="mitra_id" id="mitra_id" placeholder="Masukkan ID Mitra" required>
                                         @error('mitra_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

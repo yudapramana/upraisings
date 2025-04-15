@@ -44,6 +44,12 @@
                                         <input type="hidden" name="qr_code" id="qr_code">
                                     </div>
 
+                                    <!-- Tempat Scanner QR -->
+                                    <div id="qr-scanner-container" class="mt-3 text-center" style="display: none;">
+                                        <div id="reader" style="width: 100%; max-width: 400px; margin: auto;"></div>
+                                        <button type="button" class="btn btn-danger btn-sm mt-2" id="stopScan">❌ Stop Scan</button>
+                                    </div>
+
                                     <!-- Info Tarif -->
                                     <div class="mt-3 text-center">
                                         <h6 class="mb-1">Tarif Angkot</h6>
@@ -65,15 +71,48 @@
         </section>
     </div>
 
-    <!-- Scan QR Code (Menggunakan Scanner JS) -->
+    <!-- QR Scanner Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
     <script>
+        let scanner;
         document.getElementById('scanQR').addEventListener('click', function() {
-            let qrValue = prompt("Masukkan QR Code (simulasi)");
-            if (qrValue) {
-                document.getElementById('qr_code').value = qrValue;
-                document.getElementById('mitra_id').value = qrValue;
-            }
+            let scannerContainer = document.getElementById('qr-scanner-container');
+            scannerContainer.style.display = 'block';
+
+            scanner = new Html5Qrcode("reader");
+            scanner.start({
+                    facingMode: "environment"
+                }, // Use back camera if available
+                {
+                    fps: 10,
+                    qrbox: {
+                        width: 250,
+                        height: 250
+                    },
+                },
+                (decodedText) => {
+                    document.getElementById('qr_code').value = decodedText;
+                    document.getElementById('mitra_id').value = decodedText;
+                    stopScanning();
+                },
+                (errorMessage) => {
+                    console.warn("QR scan error:", errorMessage);
+                }
+            ).catch(err => {
+                console.error(err);
+                alert("Gagal mengakses kamera. Pastikan izin kamera diaktifkan.");
+            });
         });
+
+        document.getElementById('stopScan').addEventListener('click', stopScanning);
+
+        function stopScanning() {
+            if (scanner) {
+                scanner.stop().then(() => {
+                    document.getElementById('qr-scanner-container').style.display = 'none';
+                }).catch(err => console.error("Error stopping scanner:", err));
+            }
+        }
     </script>
 
 @endsection

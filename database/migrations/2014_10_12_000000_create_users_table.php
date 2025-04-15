@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('bank_name')->nullable(); // Nama bank (BCA, Mandiri, dll.)
             $table->string('account_number')->nullable(); // Nomor rekening bank/e-wallet
             $table->string('account_holder')->nullable(); // Nama pemilik rekening
+            $table->enum('account_verification', ['pending', 'verified', 'rejected'])->default('pending'); // Added verification status column
+            $table->enum('account_status', ['active', 'inactive', 'suspended'])->default('active');
+
             $table->rememberToken();
             $table->timestamps();
         });

@@ -93,6 +93,7 @@
                                 <a href="{{ route('partner.withdraw') }}" class="btn btn-success btn-sm">Tarik Saldo</a>
                                 <a href="" class="btn btn-primary btn-sm">Riwayat Transaksi</a>
                                 <a href="{{ route('partner.profile') }}" class="btn btn-info btn-sm">Lihat Profil</a> <!-- Tambahan Button -->
+                                <a href="{{ route('partner.qrcode') }}" class="btn btn-warning btn-sm">Lihat QR Code</a>
                             </div>
                         </div>
                     </div>

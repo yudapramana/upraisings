@@ -20,6 +20,8 @@ return new class extends Migration
             $table->decimal('last_saldo', 15, 2);
             $table->decimal('amount', 15, 2);
             $table->text('description');
+            $table->text('proof_url')->nullable();
+            $table->unsignedInteger('bank_topup_id')->nullable();
             $table->enum('status', ['pending', 'completed', 'failed'])->default('completed');
             $table->timestamps();
         });

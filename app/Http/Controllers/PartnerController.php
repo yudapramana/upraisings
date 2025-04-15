@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PartnerController extends Controller
 {
@@ -18,7 +19,9 @@ class PartnerController extends Controller
         $balance = $wallet->balance;
 
         $transactions = Transaction::where('ewallet_id', $wallet->id)
-                        ->where('status', 'completed')->get();
+                        ->where('status', 'completed')
+                        ->orderBy('created_at', 'desc')
+                        ->take(3)->get();
 
         // Hitung total pendapatan hari ini, minggu ini, dan bulan ini
         $totalToday = Transaction::where('ewallet_id', $wallet->id)
@@ -94,6 +97,21 @@ class PartnerController extends Controller
 
         return redirect()->route('partner.withdraw')->with('success', 'Permintaan tarik saldo sedang diproses!');
     }
+
+
+    public function showQr()
+    {
+        $user = Auth::user();
+        $wallet = $user->ewallet;
+
+        // String unik, misalnya pakai UUID, ID, atau apa pun yang kamu mau
+        $uniqueData = $wallet->qrcode_string; // contoh kombinasi
+
+        $qrCode = QrCode::size(300)->generate($uniqueData);
+
+        return view('partner.qrcode', compact('qrCode', 'user'));
+    }
+
 
     /**
      * Show the form for creating a new resource.

@@ -94,31 +94,33 @@
                                 <div class="list">
 
                                     @foreach ($transactions as $key => $transaction)
-                                        <div class="item{{ $key + 1 }} px-2">
-                                            <div class="section1">
-                                                @if ($transaction->operation == 'minus')
-                                                    <div class="icon down">
-                                                        <i class="fas fa-arrow-up"></i>
+                                        <a href="{{ route('payment.success', $transaction->id) }}" style="text-decoration: none; background-color: none;color:gray; ">
+                                            <div class="item{{ $key + 1 }} px-2">
+                                                <div class="section1">
+                                                    @if ($transaction->operation == 'minus')
+                                                        <div class="icon down">
+                                                            <i class="fas fa-arrow-up"></i>
+                                                        </div>
+                                                    @else
+                                                        <div class="icon up">
+                                                            <i class="fas fa-arrow-up"></i>
+                                                        </div>
+                                                    @endif
+                                                    <div class="text">
+                                                        <div class="title">{{ $transaction->description }}</div>
+                                                        <div class="description">{{ $transaction->created_at->diffForHumans() }}</div>
                                                     </div>
-                                                @else
-                                                    <div class="icon up">
-                                                        <i class="fas fa-arrow-up"></i>
-                                                    </div>
-                                                @endif
-                                                <div class="text">
-                                                    <div class="title">{{ $transaction->description }}</div>
-                                                    <div class="description">{{ $transaction->created_at->diffForHumans() }}</div>
+                                                </div>
+                                                <div class="section2">
+                                                    <div class="signal {{ $transaction->operation == 'plus' ? 'positive' : 'negative' }}">{{ $transaction->operation == 'plus' ? '+' : '-' }}</div>
+                                                    <div class="value">Rp{{ number_format($transaction->amount, 2, ',', '.') }}</div>
                                                 </div>
                                             </div>
-                                            <div class="section2">
-                                                <div class="signal {{ $transaction->operation == 'plus' ? 'positive' : 'negative' }}">{{ $transaction->operation == 'plus' ? '+' : '-' }}</div>
-                                                <div class="value">Rp{{ number_format($transaction->amount, 2, ',', '.') }}</div>
-                                            </div>
-                                        </div>
+                                        </a>
                                     @endforeach
                                 </div>
                                 {{-- <a href="/transactions" class="btn btn-outline-secondary btn-sm">Lihat Semua</a> --}}
-                                <a href="" class="btn btn-outline-secondary d-block text-center mt-2">Lihat Semua</a>
+                                <a href="{{ route('transaction.list') }}" class="btn btn-outline-secondary d-block text-center mt-2">Lihat Semua</a>
                             </div>
                         </div>
                     </div>

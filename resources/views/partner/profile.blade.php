@@ -97,7 +97,23 @@
 
                                 <div class="form-group mb-3">
                                     <label for="bank_name">Nama Bank</label>
-                                    <input type="text" name="bank_name" id="bank_name" class="form-control" value="{{ old('bank_name', $user->bank_name) }}">
+                                    <select class="form-control" id="bank_name" name="bank_name" required>
+                                        <option value="">- Pilih Bank -</option>
+                                        <option value="BCA" {{ old('bank_name', $user->bank_name) == 'BCA' ? 'selected' : '' }}>BCA (Bank Central Asia)</option>
+                                        <option value="BNI" {{ old('bank_name', $user->bank_name) == 'BNI' ? 'selected' : '' }}>BNI (Bank Negara Indonesia)</option>
+                                        <option value="BRI" {{ old('bank_name', $user->bank_name) == 'BRI' ? 'selected' : '' }}>BRI (Bank Rakyat Indonesia)</option>
+                                        <option value="Mandiri" {{ old('bank_name', $user->bank_name) == 'Mandiri' ? 'selected' : '' }}>Bank Mandiri</option>
+                                        <option value="BSI" {{ old('bank_name', $user->bank_name) == 'BSI' ? 'selected' : '' }}>BSI (Bank Syariah Indonesia)</option>
+                                        <option value="CIMB Niaga" {{ old('bank_name', $user->bank_name) == 'CIMB Niaga' ? 'selected' : '' }}>CIMB Niaga</option>
+                                        <option value="Permata" {{ old('bank_name', $user->bank_name) == 'Permata' ? 'selected' : '' }}>Bank Permata</option>
+                                        <option value="Danamon" {{ old('bank_name', $user->bank_name) == 'Danamon' ? 'selected' : '' }}>Bank Danamon</option>
+                                        <option value="BTN" {{ old('bank_name', $user->bank_name) == 'BTN' ? 'selected' : '' }}>Bank BTN</option>
+                                        <option value="BTPN" {{ old('bank_name', $user->bank_name) == 'BTPN' ? 'selected' : '' }}>Bank BTPN</option>
+                                        <option value="Maybank" {{ old('bank_name', $user->bank_name) == 'Maybank' ? 'selected' : '' }}>Maybank Indonesia</option>
+                                        <option value="OCBC NISP" {{ old('bank_name', $user->bank_name) == 'OCBC NISP' ? 'selected' : '' }}>OCBC NISP</option>
+                                        <option value="Bank Mega" {{ old('bank_name', $user->bank_name) == 'Bank Mega' ? 'selected' : '' }}>Bank Mega</option>
+                                        <option value="Bank Jago" {{ old('bank_name', $user->bank_name) == 'Bank Jago' ? 'selected' : '' }}>Bank Jago</option>
+                                    </select>
                                 </div>
 
                                 <div class="form-group mb-3">

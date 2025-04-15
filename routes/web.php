@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Approval\PartnerController as ApprovalPartnerController;
+use App\Http\Controllers\Approval\PaymentController as ApprovalPaymentController;
 use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,8 @@ use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\WalletController;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +29,10 @@ use App\Http\Controllers\WalletController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('phpmyinfo', function () {
+    phpinfo(); 
+})->name('phpmyinfo');
+
 
 Auth::routes();
 Route::resource('/', HomeController::class);
@@ -39,10 +47,13 @@ Route::group(['prefix' => 'partner', 'middleware' => ['auth', 'user-access:partn
     Route::get('/', [PartnerController::class, 'index'])->name('partner.home');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('partner.profile');
-    Route::post('//profile/update', [ProfileController::class, 'update'])->name('partner.profile.update');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('partner.profile.update');
 
-    Route::get('/partner/withdraw', [PartnerController::class, 'withdraw'])->name('partner.withdraw');
-    Route::post('/partner/withdraw/process', [PartnerController::class, 'withdrawProcess'])->name('partner.withdraw.process');
+    Route::get('/withdraw', [PartnerController::class, 'withdraw'])->name('partner.withdraw');
+    Route::post('/withdraw/process', [PartnerController::class, 'withdrawProcess'])->name('partner.withdraw.process');
+
+    Route::get('/qrcode', [PartnerController::class, 'showQr'])->name('partner.qrcode');
+
 });
 
 
@@ -51,9 +62,18 @@ Route::group(['prefix' => 'customer', 'middleware' => ['auth', 'user-access:cust
     Route::get('/', [CustomerController::class, 'index'])->name('customer.home');
     Route::get('/topup', [WalletController::class, 'showTopUpForm'])->name('topup');
     Route::post('/topup', [WalletController::class, 'processTopUp'])->name('topup.process');
+    Route::post('/topup/upload/{topupId}', [WalletController::class, 'uploadProof'])->name('topup.upload');
+    Route::post('/topup/{topupId}/submit-proof', [WalletController::class, 'submitProof'])->name('topup.submitProof');
+    Route::get('/transaction/list', [WalletController::class, 'transactions'])->name('transaction.list');
+
+
 
     Route::get('/pay', [PaymentController::class, 'showPaymentForm'])->name('pay');
     Route::post('/pay', [PaymentController::class, 'processPayment'])->name('pay.process');
+    Route::get('/payment/success/{id}', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+
+
+
 });
 
 /*--------------------------------------------------------------------------------------
@@ -74,9 +94,26 @@ All Approval Routes List
 ----------------------------------------------------------------------------------------*/
 Route::middleware(['auth', 'user-access:approval'])->group(function () {
     Route::get('approval', [DashboardController::class, 'index'])->name('approval.home');
-    Route::get('approval/history', [HistoryListController::class, 'index']);
+    // Route::get('approval/history', [HistoryListController::class, 'index']);
+    // Route::resource('approval/submission-list-approval', ApprovalPartnerController::class);
 
-    Route::resource('approval/submission-list-approval', SubmissionListController::class);
+    Route::get('/approval/partner-verification', [ApprovalPartnerController::class, 'index'])->name('partner-verification.index');
+    Route::put('/approval/partner-verification/update/{id}', [ApprovalPartnerController::class, 'update'])->name('partner-verification.update');
+    Route::delete('/approval/partner-verification/delete/{id}', [ApprovalPartnerController::class, 'destroy'])->name('partner-verification.delete');
+
+    Route::get('/approval/topup-verification', [ApprovalPaymentController::class, 'index'])->name('admin.ewallet.index');
+    Route::put('/approval/topup-verification/{id}', [ApprovalPaymentController::class, 'verify'])->name('admin.ewallet.verify');
+
+
+
+});
+
+
+Route::get('/test-cloudinary', function () {
+
+    return public_path('avatar.png');
+    $result = Cloudinary::upload(public_path('avatar.png'));
+    return $result->getSecurePath();
 });
 
  

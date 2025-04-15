@@ -16,7 +16,10 @@ class CustomerController extends Controller
         $wallet = Auth::user()->ewallet;
         $balance = $wallet->balance;
 
-        $transactions = Transaction::where('ewallet_id', $wallet->id)->get();
+        $transactions = Transaction::where('ewallet_id', $wallet->id)
+                        ->where('status', 'completed')
+                        ->orderBy('created_at', 'desc')
+                        ->take(3)->get();
         return view('customer.main', [
             'title' => 'Dashboard Pelanggan Setia',
             'balance' => $balance,

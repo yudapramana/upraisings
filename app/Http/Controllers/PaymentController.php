@@ -14,7 +14,7 @@ class PaymentController extends Controller
     // Menampilkan Form Pembayaran
     public function showPaymentForm()
     {
-        return view('customer.pay', [
+        return view('customer.payment.pay', [
             'title' => 'Pembayaran Angkot',
         ]);
     }
@@ -23,15 +23,15 @@ class PaymentController extends Controller
     public function processPayment(Request $request)
     {
         $request->validate([
-            'mitra_id' => 'required_without:qr_code|exists:users,id',
+            'mitra_id' => 'required_without:qr_code|exists:ewallets,qrcode_string',
             'qr_code' => 'required_without:mitra_id',
         ]);
 
         $user = Auth::user();
         $cWallet = EWallet::where('user_id', $user->id)->first();
-        $pWallet = EWallet::where('user_id', $request->mitra_id)->first();
+        $pWallet = EWallet::where('qrcode_string', $request->mitra_id)->first();
 
-        $userPartner = User::find($request->mitra_id);
+        $userPartner = User::find($pWallet->user_id);
         if($userPartner->role != 'partner') {
             return redirect()->route('pay')->with('error', 'Penerima Bukan Mitra Angkot!.');
         }
@@ -49,7 +49,7 @@ class PaymentController extends Controller
         $cWallet->save();
 
         // Simpan transaksi Customer
-        Transaction::create([
+        $customerTx = Transaction::create([
             'ewallet_id' => $cWallet->id,
             'type' => 'Payment',
             'method' => 'System',
@@ -74,7 +74,17 @@ class PaymentController extends Controller
             'description' => "Receive Payment (ID: {$user->id})"
         ]);
 
-        return redirect()->route('pay')->with('success', 'Pembayaran berhasil!');
+        // return redirect()->route('pay')->with('success', 'Pembayaran berhasil!');
+        // Redirect ke halaman detail transaksi
+        return redirect()->route('payment.success', $customerTx->id);
+
+    }
+
+    public function paymentSuccess($id)
+    {
+        $transaction = Transaction::with('ewallet.user')->findOrFail($id);
+
+        return view('customer.payment.success', compact('transaction'));
     }
 }
 

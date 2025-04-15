@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ewallets', function (Blueprint $table) {
+        Schema::create('banks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id');
-            $table->decimal('balance', 15, 2)->default(0);
-            $table->text('qrcode_string')->nullable(); // Added qrcode string
-            $table->text('qrcode_url')->nullable(); // Added qrcode url
+            $table->string('bank_name');
+            $table->string('account_number');
+            $table->string('account_holder');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ewallets');
+        Schema::dropIfExists('banks');
     }
 };

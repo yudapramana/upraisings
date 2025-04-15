@@ -14,15 +14,15 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
                 @if (Auth::user()->role == 'admin')
-                    <a href={{ url('/admin') }} class="nav-link">
-                @else
-                    <a href={{ url('/approval') }} class="nav-link">
+                    <a href={{ url('/admin') }} class="nav-link @if (Request::segment(2) == '') active @endif">
+                    @else
+                        <a href={{ url('/approval') }} class="nav-link @if (Request::segment(2) == '') active @endif">
                 @endif
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                    <p>Dashboard</p>
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>Dashboard</p>
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 @if (Auth::user()->role == 'admin')
                     <a href={{ url('/admin/submission-list') }} class="nav-link">
                 @else
@@ -30,6 +30,27 @@
                 @endif
                     <i class="fas fa-table nav-icon"></i>
                     <p>Tabel Pengajuan</p>
+                </a>
+            </li> --}}
+            <li class="nav-item">
+                @if (Auth::user()->role == 'admin')
+                    <a href={{ url('/admin/partner-verification') }} class="nav-link @if (Request::segment(2) == 'partner-verification') active @endif ">
+                    @else
+                        <a href={{ url('/approval/partner-verification') }} class="nav-link @if (Request::segment(2) == 'partner-verification') active @endif">
+                @endif
+                <i class="fas fa-table nav-icon"></i>
+                <p>Verifikasi Mitra</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                @if (Auth::user()->role == 'admin')
+                    <a href={{ url('/admin/topup-verification') }} class="nav-link @if (Request::segment(2) == 'topup-verification') active @endif ">
+                    @else
+                        <a href={{ url('/approval/topup-verification') }} class="nav-link @if (Request::segment(2) == 'topup-verification') active @endif">
+                @endif
+                <i class="fas fa-table nav-icon"></i>
+                <p>Verifikasi TopUp</p>
                 </a>
             </li>
             @if (Auth::user()->role == 'admin')
@@ -50,11 +71,11 @@
             <li class="nav-item">
                 @if (Auth::user()->role == 'admin')
                     <a href={{ url('/admin/history') }} class="nav-link">
-                @else
-                    <a href={{ url('/approval/history') }} class="nav-link">
+                    @else
+                        <a href={{ url('/approval/history') }} class="nav-link">
                 @endif
-                    <i class="fas fa-history nav-icon"></i>
-                    <p>Riwayat Kegiatan</p>
+                <i class="fas fa-history nav-icon"></i>
+                <p>Riwayat Kegiatan</p>
                 </a>
             </li>
         </ul>

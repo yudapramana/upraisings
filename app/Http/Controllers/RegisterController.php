@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EWallet;
 use DB;
 
 use App\Models\SubmissionList;
@@ -87,10 +88,14 @@ class RegisterController extends Controller {
             'role' => 'partner'
         ]);
 
+        EWallet::create([
+            'user_id' => $partner->id
+        ]);
+
         Auth::login($partner);
 
         // Redirect to dashboard or home
-        return redirect()->route('dashboard')->with('success', 'Pendaftaran berhasil! Anda telah login.');
+        return redirect()->route('partner.home')->with('success', 'Pendaftaran berhasil! Anda telah login.');
     }
 
     /**
@@ -130,6 +135,10 @@ class RegisterController extends Controller {
                 'password' => Hash::make($request->password ?? 'defaultpassword'), // Pastikan password tidak kosong
                 'email' => $request->email,
                 'role' => 'customer'
+            ]);
+
+            EWallet::create([
+                'user_id' => $customer->id
             ]);
     
             // Login otomatis setelah registrasi
