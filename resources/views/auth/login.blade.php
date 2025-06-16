@@ -62,9 +62,9 @@
                     <div class="mt-3">
                         <label class="d-block mb-2">Login Demo:</label>
                         <div class="d-flex justify-content-between flex-wrap gap-2">
-                            <button type="button" class="btn btn-outline-info btn-sm" onclick="fillDemo('customer')">Customer</button>
-                            <button type="button" class="btn btn-outline-success btn-sm" onclick="fillDemo('partner')">Partner</button>
-                            <button type="button" class="btn btn-outline-warning btn-sm" onclick="fillDemo('approval')">Approval</button>
+                            <button type="button" class="btn btn-outline-info btn-sm" onclick="fillDemo('customer')">Penumpang</button>
+                            <button type="button" class="btn btn-outline-success btn-sm" onclick="fillDemo('partner')">Angkot</button>
+                            <button type="button" class="btn btn-outline-warning btn-sm" onclick="fillDemo('approval')">Admin</button>
                         </div>
                     </div>
                 </form>
