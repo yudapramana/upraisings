@@ -101,7 +101,7 @@
 
                                             <div class="pl-3 pt-2 flex-grow-1">
                                                 @php
-                                                    $locationParts = explode(',', $trip->geton_location);
+                                                    $locationParts = explode(',', $trip->getoff_location);
                                                     $firstTwo = array_slice($locationParts, 0, 3);
                                                     $formattedLocation = implode(',', $firstTwo);
                                                 @endphp
