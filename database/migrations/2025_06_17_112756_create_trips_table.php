@@ -33,6 +33,9 @@ return new class extends Migration
             $table->string('license_plate')->nullable();
             $table->string('driver_name')->nullable();
             $table->text('vehicle_photo')->nullable();
+            $table->string('route_number')->nullable();       // Misal: 201, 301
+            $table->string('route_name')->nullable();                    // Misal: M. Yamin - Siteba
+            $table->string('color')->nullable();  
 
             $table->decimal('distance', 7,2)->nullable();
             $table->decimal('trip_fare', 15, 2)->nullable();

@@ -82,6 +82,7 @@ Route::group(['prefix' => 'customer', 'middleware' => ['auth', 'user-access:cust
 
     Route::get('/trip/{id?}', [TripController::class, 'show'])->name('trip.show');
     Route::patch('/trip/{trip}/complete', [TripController::class, 'complete'])->name('trip.complete')->middleware('auth');
+    Route::get('/trip-list', [TripController::class, 'index'])->name('trip.list');
 
 });
 

@@ -2,6 +2,7 @@
 @section('title', 'Detail Perjalanan')
 
 @section('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         .hidden {
@@ -129,7 +130,7 @@
                                 <h6 class="text-muted">Detail Transaksi</h6>
 
                                 <div class="d-flex justify-content-between flex-wrap gap-2">
-                                    <span class="text-dark font-weight-bold">Naik Angkot</span>
+                                    <span class="text-dark font-weight-bold">Waktu Naik</span>
                                     <span>{{ $trip->created_at->format('d M, h:i A') }}</span>
                                 </div>
 
@@ -142,7 +143,24 @@
 
                                 <hr />
 
-                                <h6 class="text-muted">Detail Pengendara</h6>
+                                <h6 class="text-muted">Detail Angkot</h6>
+
+                                <div class="d-flex justify-content-between flex-wrap gap-2">
+                                    <span class="text-dark font-weight-bold">Trayek</span>
+                                    <span>
+                                        <span class="badge border rounded text-dark font-weight-bold" style=" border-bottom-color: {{ $trip->color }} !important; border-bottom-width: 3px !important; font-size: 0.5rem;">
+                                            <i class="fas fa-shuttle-van me-1" style="font-size: 0.7rem;"></i>
+                                            {{ $trip->route_number }}
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <div class="d-flex justify-content-between flex-wrap gap-2">
+                                    <span class="text-dark font-weight-bold">
+                                        Rute
+                                    </span>
+                                    <span>{{ $trip->route_name }}</span>
+                                </div>
 
                                 <div class="d-flex justify-content-between flex-wrap gap-2">
                                     <span class="text-dark font-weight-bold">

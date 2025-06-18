@@ -125,7 +125,7 @@ class WalletController extends Controller
             $query->where('operation', $request->type);
         }
 
-        $transactions = $query->get();
+        $transactions = $query->take(10)->get();
 
         return view('transaction.list', compact('transactions'));
     }

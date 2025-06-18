@@ -53,8 +53,16 @@ class CreateUsersSeeder extends Seeder
                 'updated_at'    => date('Y-m-d H:i:s'),
             ],
             [
-                'name'          => 'customer',
-                'email'         => 'customer@customer.com',
+                'name'          => 'Toufik Ghozali',
+                'email'         => 'tghoz@gmail.com',
+                'role'          => 'customer',
+                'password'      => Hash::make('customer'),
+                'created_at'    => date('Y-m-d H:i:s'),
+                'updated_at'    => date('Y-m-d H:i:s'),
+            ],
+            [
+                'name'          => 'Annisa Sabrina',
+                'email'         => 'Annsab@gmail.com',
                 'role'          => 'customer',
                 'password'      => Hash::make('customer'),
                 'created_at'    => date('Y-m-d H:i:s'),
@@ -102,7 +110,7 @@ class CreateUsersSeeder extends Seeder
             ]);
         }
 
-        $user = User::where('name', 'customer')->first();
+        $user = User::where('name', 'Toufik Ghozali')->first();
         $user->load('ewallet');
         $ewallet = $user->ewallet;
 

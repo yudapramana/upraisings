@@ -84,9 +84,6 @@
                                             <select class="custom-select form-select-sm @error('payment_method') is-invalid @enderror" name="payment_method" id="payment_method" required>
                                                 <option value="">Pilih metode</option>
                                                 <option value="bank_transfer">🏦 Transfer Bank</option>
-                                                <option value="gopay">📱 GoPay</option>
-                                                <option value="ovo">🔵 OVO</option>
-                                                <option value="dana">💳 DANA</option>
                                             </select>
                                             @error('payment_method')
                                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -145,23 +142,23 @@
                 const bankAccounts = {
                     "1": {
                         number: "123-456-7890",
-                        holder: "PT. ABC Indonesia"
+                        holder: "PT. ANGKOTTERA ID - BCA"
                     },
                     "2": {
                         number: "987-654-3210",
-                        holder: "PT. ABC Mandiri"
+                        holder: "PT. ANGKOTTERA ID - MANDIRI"
                     },
                     "3": {
                         number: "555-333-2221",
-                        holder: "PT. ABC BNI"
+                        holder: "PT. ANGKOTTERA ID - BNI"
                     },
                     "4": {
                         number: "444-888-7776",
-                        holder: "PT. ABC BRI"
+                        holder: "PT. ANGKOTTERA ID - BRI"
                     },
                     "5": {
                         number: "999-111-5552",
-                        holder: "PT. ABC CIMB"
+                        holder: "PT. ANGKOTTERA ID - CIMB"
                     }
                 };
 

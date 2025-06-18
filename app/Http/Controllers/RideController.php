@@ -31,9 +31,11 @@ class RideController extends Controller
             'geton_longitude' => 'required',
         ]);
 
-        $ewallet = EWallet::where('qrcode_string', $request->qrcode_string)->with('user.vehicle')->first();
+        $ewallet = EWallet::where('qrcode_string', $request->qrcode_string)->with('user.vehicle.angkotType')->first();
         $vehicle = $ewallet->user->vehicle;
 
+
+        // dd($vehicle);
         $trip = Trip::create([
             'geton_location'            => $request->geton_location,
             'geton_latitude'            => $request->geton_latitude,
@@ -43,6 +45,9 @@ class RideController extends Controller
             'status'                    => 'ongoing',
             'license_plate'             => $vehicle->license_plate,
             'vehicle_photo'             => $vehicle->vehicle_photo,
+            'route_number'              => $vehicle->angkotType->route_number,
+            'route_name'                => $vehicle->angkotType->route_name,
+            'color'                     => $vehicle->angkotType->color,
             'driver_name'               => $vehicle->user->name,
             'partner_id'                => $ewallet->user_id,
         ]);
