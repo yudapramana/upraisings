@@ -20,10 +20,17 @@ class CustomerController extends Controller
                         ->where('status', 'completed')
                         ->orderBy('created_at', 'desc')
                         ->take(3)->get();
+
+        $trips = \App\Models\Trip::where('user_id', Auth::user()->id)
+                ->latest()
+                ->take(5)
+                ->get();
+
+
         return view('customer.main', [
             'title' => 'Dashboard Pelanggan Setia',
             'balance' => $balance,
-            'transactions' => $transactions
+            'trips' => $trips
         ]);
     }
 

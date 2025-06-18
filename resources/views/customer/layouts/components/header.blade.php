@@ -1,4 +1,4 @@
-<header class="py-3">
+<header class="py-1">
     <div class="container">
         <!-- Start Header -->
         <div class="header">
@@ -17,11 +17,11 @@
                     <ul class="navbar-nav ml-auto">
                         @if (!\Illuminate\Support\Facades\Auth::user())
                             <li class="nav-item pr-3">
-                                <a href="/login" class="btn btn-custom btn-outline-info btn-lg">Login</a>
+                                <a href="/login" class="btn btn-sm btn-custom btn-outline-info btn-lg">Login</a>
                             </li>
                         @else
                             <li>
-                                <a class="btn btn-custom btn-outline-info btn-lg" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <a class="btn btn-sm btn-custom btn-outline-info btn-lg" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     Logout
                                 </a>
 

@@ -1,1 +1,8 @@
-<footer class="text-center p-4"> © 2025 AngkotApp | Registered in the Directorate General of Intellectual Property of the Republic of Indonesia.</footer>
+<style>
+    #footer {
+        height: 10vh;
+    }
+</style>
+<div id="footer">
+    <footer class="text-center p-4"> © 2025 AngkotApp</footer>
+</div>

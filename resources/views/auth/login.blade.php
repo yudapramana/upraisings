@@ -78,13 +78,13 @@
     function fillDemo(role) {
         const emails = {
             customer: 'customer@customer.com',
-            partner: 'partner@partner.com',
+            partner: 'agusbunto@gmail.com',
             approval: 'approval@approval.com'
         };
 
         const passwords = {
             customer: 'customer',
-            partner: 'partner',
+            partner: '12345678',
             approval: 'approval'
         };
 

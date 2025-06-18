@@ -34,54 +34,151 @@
                             <div class="card card-body">
                                 <h4 class="card-title">Formulir Pendaftaran Mitra Angkot</h4>
                                 <h5 class="card-subtitle"> Harap diisi dengan data yang valid </h5>
-                                <form class="form-horizontal m-t-30 needs-validation" method="POST" action="{{ route('store.partner') }}" novalidate>
+
+                                <form class="form-horizontal m-t-30 needs-validation" method="POST" action="{{ route('store.partner') }}" enctype="multipart/form-data" novalidate>
                                     @csrf
+
+                                    {{-- Tampilkan Semua Error dalam Satu Div --}}
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul class="mb-0">
+                                                @foreach ($errors->all() as $error)
+                                                    <li class="small">{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+
+                                    {{-- Data User --}}
                                     <div class="form-group">
                                         <label>Nama Lengkap</label>
-                                        <input name="nama_lengkap" type="text" class="form-control" placeholder="Cth: Adit Brahmana" required="">
+                                        <input name="nama_lengkap" type="text" class="form-control" placeholder="Cth: Adit Brahmana" value="{{ old('nama_lengkap') }}" required>
                                         <small class="text-muted text-sm">Harap isi dengan nama sesuai KTP termasuk tanda baca dan gelar</small>
                                     </div>
+
                                     <div class="form-group">
                                         <label for="mobile_phone">Nomor HP aktif</label>
-                                        <input type="text" id="mobile_phone" name="mobile_phone" class="form-control" placeholder="Cth: 081122334455" required="">
+                                        <input type="text" id="mobile_phone" name="mobile_phone" class="form-control" placeholder="Cth: 081122334455" value="{{ old('mobile_phone') }}" required>
                                     </div>
+
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input type="email" id="email" name="email" class="form-control" placeholder="Cth: adityabrahmana@gmai.com" required="">
+                                        <input type="email" id="email" name="email" class="form-control" placeholder="Cth: adityabrahmana@gmail.com" value="{{ old('email') }}" required>
                                     </div>
+
                                     <div class="form-group">
                                         <label for="city_register">Kota Tempat Mendaftar</label>
-                                        <select class="custom-select col-12" id="city_register" name="city_register" required="">
+                                        <select class="custom-select col-12" id="city_register" name="city_register" required>
                                             <option value="">-Pilih Kab/Kota-</option>
-                                            <option value="1309">Kabupaten Kepulauan Mentawai</option>
-                                            <option value="1301">Kabupaten Pesisir Selatan</option>
-                                            <option value="1302">Kabupaten Solok</option>
-                                            <option value="1303">Kabupaten Sijunjung</option>
-                                            <option value="1304">Kabupaten Tanah Datar</option>
-                                            <option value="1305">Kabupaten Padang Pariaman</option>
-                                            <option value="1306">Kabupaten Agam</option>
-                                            <option value="1307">Kabupaten Lima Puluh Kota</option>
-                                            <option value="1308">Kabupaten Pasaman</option>
-                                            <option value="1311">Kabupaten Solok Selatan</option>
-                                            <option value="1310">Kabupaten Dharmas Raya</option>
-                                            <option value="1312">Kabupaten Pasaman Barat</option>
-                                            <option value="1371">Kota Padang</option>
-                                            <option value="1372">Kota Solok</option>
-                                            <option value="1373">Kota Sawah Lunto</option>
-                                            <option value="1374">Kota Padang Panjang</option>
-                                            <option value="1375">Kota Bukittinggi</option>
-                                            <option value="1376">Kota Payakumbuh</option>
-                                            <option value="1377">Kota Pariaman</option>
+                                            @php
+                                                $cities = [
+                                                    '1309' => 'Kabupaten Kepulauan Mentawai',
+                                                    '1301' => 'Kabupaten Pesisir Selatan',
+                                                    '1302' => 'Kabupaten Solok',
+                                                    '1303' => 'Kabupaten Sijunjung',
+                                                    '1304' => 'Kabupaten Tanah Datar',
+                                                    '1305' => 'Kabupaten Padang Pariaman',
+                                                    '1306' => 'Kabupaten Agam',
+                                                    '1307' => 'Kabupaten Lima Puluh Kota',
+                                                    '1308' => 'Kabupaten Pasaman',
+                                                    '1311' => 'Kabupaten Solok Selatan',
+                                                    '1310' => 'Kabupaten Dharmas Raya',
+                                                    '1312' => 'Kabupaten Pasaman Barat',
+                                                    '1371' => 'Kota Padang',
+                                                    '1372' => 'Kota Solok',
+                                                    '1373' => 'Kota Sawah Lunto',
+                                                    '1374' => 'Kota Padang Panjang',
+                                                    '1375' => 'Kota Bukittinggi',
+                                                    '1376' => 'Kota Payakumbuh',
+                                                    '1377' => 'Kota Pariaman',
+                                                ];
+                                            @endphp
+                                            @foreach ($cities as $code => $name)
+                                                <option value="{{ $code }}" {{ old('city_register') == $code ? 'selected' : '' }}>{{ $name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
+
                                     <div class="form-group">
                                         <label>Password</label>
-                                        <input type="password" name="password" class="form-control" required="">
+                                        <input type="text" name="password" id="password" class="form-control" required>
                                     </div>
+
+                                    <hr>
+
+                                    {{-- Data Rekening Bank --}}
+                                    <h5 class="mt-4">Informasi Rekening Bank</h5>
+                                    <div class="form-group">
+                                        <label for="bank_name">Nama Bank</label>
+                                        <select class="form-control" id="bank_name" name="bank_name" required>
+                                            <option value="">- Pilih Bank -</option>
+                                            <option value="BCA" {{ old('bank_name') == 'BCA' ? 'selected' : '' }}>BCA (Bank Central Asia)</option>
+                                            <option value="BNI" {{ old('bank_name') == 'BNI' ? 'selected' : '' }}>BNI (Bank Negara Indonesia)</option>
+                                            <option value="BRI" {{ old('bank_name') == 'BRI' ? 'selected' : '' }}>BRI (Bank Rakyat Indonesia)</option>
+                                            <option value="Mandiri" {{ old('bank_name') == 'Mandiri' ? 'selected' : '' }}>Bank Mandiri</option>
+                                            <option value="BSI" {{ old('bank_name') == 'BSI' ? 'selected' : '' }}>BSI (Bank Syariah Indonesia)</option>
+                                            <option value="CIMB Niaga" {{ old('bank_name') == 'CIMB Niaga' ? 'selected' : '' }}>CIMB Niaga</option>
+                                            <option value="Permata" {{ old('bank_name') == 'Permata' ? 'selected' : '' }}>Bank Permata</option>
+                                            <option value="Danamon" {{ old('bank_name') == 'Danamon' ? 'selected' : '' }}>Bank Danamon</option>
+                                            <option value="BTN" {{ old('bank_name') == 'BTN' ? 'selected' : '' }}>Bank BTN</option>
+                                            <option value="BTPN" {{ old('bank_name') == 'BTPN' ? 'selected' : '' }}>Bank BTPN</option>
+                                            <option value="Maybank" {{ old('bank_name') == 'Maybank' ? 'selected' : '' }}>Maybank Indonesia</option>
+                                            <option value="OCBC NISP" {{ old('bank_name') == 'OCBC NISP' ? 'selected' : '' }}>OCBC NISP</option>
+                                            <option value="Bank Mega" {{ old('bank_name') == 'Bank Mega' ? 'selected' : '' }}>Bank Mega</option>
+                                            <option value="Bank Jago" {{ old('bank_name') == 'Bank Jago' ? 'selected' : '' }}>Bank Jago</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="account_number">Nomor Rekening / e-Wallet</label>
+                                        <input type="text" name="account_number" id="account_number" class="form-control" value="{{ old('account_number') }}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="account_holder">Nama Pemilik Rekening</label>
+                                        <input type="text" name="account_holder" id="account_holder" class="form-control" value="{{ old('account_holder') }}">
+                                    </div>
+
+                                    <hr>
+
+                                    {{-- Data Kendaraan --}}
+                                    <h5 class="mt-4">Informasi Kendaraan</h5>
+
+                                    <div class="form-group">
+                                        <label for="angkot_type_id">Jenis/Trayek Angkot</label>
+                                        <select class="custom-select col-12" id="angkot_type_id" name="angkot_type_id" required>
+                                            <option value="">-Pilih Trayek-</option>
+                                            @foreach ($angkotTypes as $angkot)
+                                                <option value="{{ $angkot->id }}" {{ old('angkot_type_id') == $angkot->id ? 'selected' : '' }}>
+                                                    {{ $angkot->route_number }} - {{ $angkot->route_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="license_plate">Plat Nomor Kendaraan</label>
+                                        <input type="text" id="license_plate" name="license_plate" class="form-control" value="{{ old('license_plate') }}" placeholder="Contoh: BA 1234 QZ" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="vehicle_photo">Foto Angkot</label><br>
+                                        <button type="button" id="upload_widget" class="btn btn-outline-primary">Upload Foto Angkot</button>
+                                        <input type="hidden" id="vehicle_photo" name="vehicle_photo" value="{{ old('vehicle_photo') }}">
+                                        <div id="preview_image" class="mt-2">
+                                            @if (old('vehicle_photo'))
+                                                <img src="{{ old('vehicle_photo') }}" class="img-fluid mt-2 rounded border" style="max-height: 150px;">
+                                            @endif
+                                        </div>
+                                        <small class="text-muted text-sm">Unggah foto bagian depan angkot dengan jelas</small>
+                                    </div>
+
                                     <button type="submit" class="btn btn-custom btn-info btn-lg btn-block">
                                         Kirim Pendaftaran
                                     </button>
                                 </form>
+
+
                             </div>
                         </div>
                     </div>
@@ -265,6 +362,34 @@
             }
         });
     </script>
+
+
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+    {{-- folder: 'angkot_photos',
+            sources: ['local', 'camera', 'url'], --}}
+    <script type="text/javascript">
+        var myWidget = cloudinary.createUploadWidget({
+            cloudName: 'dmynbnqtt', // Ganti dengan cloud name kamu
+            uploadPreset: 'angkotapp', // Ganti dengan upload preset kamu
+            multiple: false,
+            cropping: false,
+            maxFileSize: 2000000,
+            clientAllowedFormats: ["jpg", "jpeg", "png"],
+            maxImageWidth: 1600
+        }, (error, result) => {
+            if (!error && result && result.event === "success") {
+                console.log("Foto berhasil diupload: ", result.info);
+                document.getElementById("vehicle_photo").value = result.info.secure_url;
+                document.getElementById("preview_image").innerHTML =
+                    `<img src="${result.info.secure_url}" class="img-fluid mt-2 rounded border" style="max-height: 150px;">`;
+            }
+        });
+
+        document.getElementById("upload_widget").addEventListener("click", function() {
+            myWidget.open();
+        }, false);
+    </script>
+
 
 
 @endsection

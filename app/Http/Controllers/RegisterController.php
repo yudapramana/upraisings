@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AngkotType;
 use App\Models\EWallet;
 use DB;
 
 use App\Models\SubmissionList;
 use App\Models\User;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
 
 class RegisterController extends Controller {
 
@@ -29,9 +33,11 @@ class RegisterController extends Controller {
                 return redirect()->route('index');
             }
         } else {
+            $angkotTypes = AngkotType::orderBy('route_number')->get();
             return view('landing.register', [
-                'title' => 'Pendaftaran Mitra Angkot',
-                'role' => 'partner'
+                'title' => 'Pendaftaran Angkot',
+                'role' => 'partner',
+                'angkotTypes' => $angkotTypes
             ]);
         }
         
@@ -59,44 +65,116 @@ class RegisterController extends Controller {
         }
     }
 
-    public function storePartner(Request $request){
+    public function storePartner(Request $request)
+    {
         $request->validate([
+            // User Validation
             'nama_lengkap' => 'required|string|max:255',
             'mobile_phone' => 'required|regex:/^08[0-9]{8,11}$/',
             'email' => 'required|email|unique:users,email',
             'city_register' => 'required',
             'password' => 'required|min:6',
+            'vehicle_photo' => 'required',
+
+            // Vehicle Validation
+            'angkot_type_id' => 'required|exists:angkot_types,id',
+            'license_plate' => 'required|string|max:20|unique:vehicles,license_plate',
         ], [
-            'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
-            'mobile_phone.required' => 'Nomor HP wajib diisi.',
-            'mobile_phone.regex' => 'Format nomor HP tidak valid.',
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
-            'email.unique' => 'Email sudah terdaftar.',
-            'city_register.required' => 'Kota tempat mendaftar wajib dipilih.',
-            'city_register.exists' => 'Kota yang dipilih tidak valid.',
-            'password.required' => 'Password wajib diisi.',
-            'password.min' => 'Password minimal harus 6 karakter.',
+            // Custom messages
+            
+            'email.unique' => 'Email sudah terdaftar, gunakan email lain.',
+            'angkot_type_id.required' => 'Jenis angkot wajib dipilih.',
+            'angkot_type_id.exists' => 'Trayek angkot tidak valid.',
+            'license_plate.required' => 'Plat nomor kendaraan wajib diisi.',
+            'license_plate.unique' => 'Plat nomor sudah terdaftar.',
+            'vehicle_photo.required' => 'Foto angkot wajib diunggah.',
         ]);
 
-        $partner = User::create([
-            'name' => $request->nama_lengkap,
-            'mobile_phone' => $request->mobile_phone,
-            'email' => $request->email,
-            'city_register' => $request->city_register,
-            'password' => Hash::make($request->password),
-            'role' => 'partner'
-        ]);
+        // dd($request->all());
 
-        EWallet::create([
-            'user_id' => $partner->id
-        ]);
+        DB::beginTransaction();
+        try {
+            // Simpan User
+            $partner = User::create([
+                'name' => $request->nama_lengkap,
+                'mobile_phone' => $request->mobile_phone,
+                'email' => $request->email,
+                'city_register' => $request->city_register,
+                'password' => Hash::make($request->password),
+                'role' => 'partner',
+                'bank_name' => $request->bank_name,
+                'account_number' => $request->account_number,
+                'account_holder' => $request->account_holder,
+            ]);
 
-        Auth::login($partner);
 
-        // Redirect to dashboard or home
-        return redirect()->route('partner.home')->with('success', 'Pendaftaran berhasil! Anda telah login.');
+            $uniqueString = Str::uuid()->toString();
+            // Simpan Saldo E-Wallet
+            EWallet::create([
+                'user_id' => $partner->id,
+                'qrcode_string' => $uniqueString
+            ]);
+
+            // Upload Foto Angkot
+            // $vehiclePhotoPath = $request->file('vehicle_photo')->store('vehicle_photos', 'public');
+                // 'vehicle_photo' => $vehiclePhotoPath,
+
+            // Simpan Kendaraan
+            Vehicle::create([
+                'user_id' => $partner->id,
+                'angkot_type_id' => $request->angkot_type_id,
+                'license_plate' => strtoupper($request->license_plate),
+            ]);
+
+            DB::commit();
+
+
+            Auth::login($partner);
+            return redirect()->route('partner.home')->with('success', 'Pendaftaran berhasil! Anda telah login.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data.'])->withInput();
+        }
     }
+
+    // public function storePartner(Request $request){
+    //     $request->validate([
+    //         'nama_lengkap' => 'required|string|max:255',
+    //         'mobile_phone' => 'required|regex:/^08[0-9]{8,11}$/',
+    //         'email' => 'required|email|unique:users,email',
+    //         'city_register' => 'required',
+    //         'password' => 'required|min:6',
+    //     ], [
+    //         'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
+    //         'mobile_phone.required' => 'Nomor HP wajib diisi.',
+    //         'mobile_phone.regex' => 'Format nomor HP tidak valid.',
+    //         'email.required' => 'Email wajib diisi.',
+    //         'email.email' => 'Format email tidak valid.',
+    //         'email.unique' => 'Email sudah terdaftar.',
+    //         'city_register.required' => 'Kota tempat mendaftar wajib dipilih.',
+    //         'city_register.exists' => 'Kota yang dipilih tidak valid.',
+    //         'password.required' => 'Password wajib diisi.',
+    //         'password.min' => 'Password minimal harus 6 karakter.',
+    //     ]);
+
+    //     $partner = User::create([
+    //         'name' => $request->nama_lengkap,
+    //         'mobile_phone' => $request->mobile_phone,
+    //         'email' => $request->email,
+    //         'city_register' => $request->city_register,
+    //         'password' => Hash::make($request->password),
+    //         'role' => 'partner'
+    //     ]);
+
+    //     EWallet::create([
+    //         'user_id' => $partner->id
+    //     ]);
+
+    //     Auth::login($partner);
+
+    //     // Redirect to dashboard or home
+    //     return redirect()->route('partner.home')->with('success', 'Pendaftaran berhasil! Anda telah login.');
+    // }
 
     /**
      * Store a newly registered customer.

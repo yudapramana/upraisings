@@ -1,4 +1,4 @@
-<header class="py-3">
+<header class="py-1">
     <div class="container">
         <!-- Start Header -->
         <div class="header">

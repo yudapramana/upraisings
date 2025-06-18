@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AngkotController;
 use App\Http\Controllers\Approval\PartnerController as ApprovalPartnerController;
 use App\Http\Controllers\Approval\PaymentController as ApprovalPaymentController;
 use App\Http\Controllers\CustomerController;
@@ -15,6 +16,8 @@ use App\Http\Controllers\Partner\ProfileController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\RideController;
+use App\Http\Controllers\TripController;
 use App\Http\Controllers\WalletController;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
@@ -58,7 +61,7 @@ Route::group(['prefix' => 'partner', 'middleware' => ['auth', 'user-access:partn
 
 
 // Route::middleware(['auth', 'user-access:customer'])->group(function () {
-Route::group(['prefix' => 'customer', 'middleware' => ['auth', 'user-access:customer']], function(){
+Route::group(['prefix' => 'customer', 'middleware' => ['auth', 'user-access:customer', 'check.ongoing.trip']], function(){
     Route::get('/', [CustomerController::class, 'index'])->name('customer.home');
     Route::get('/topup', [WalletController::class, 'showTopUpForm'])->name('topup');
     Route::post('/topup', [WalletController::class, 'processTopUp'])->name('topup.process');
@@ -72,7 +75,13 @@ Route::group(['prefix' => 'customer', 'middleware' => ['auth', 'user-access:cust
     Route::post('/pay', [PaymentController::class, 'processPayment'])->name('pay.process');
     Route::get('/payment/success/{id}', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
 
+    Route::get('/ride', [RideController::class, 'ride'])->name('ride');
+    Route::post('/ride/process', [RideController::class, 'process'])->name('ride.process');
 
+    Route::get('/angkot/{id}', [AngkotController::class, 'getAngkot'])->name('angkot.get');
+
+    Route::get('/trip/{id?}', [TripController::class, 'show'])->name('trip.show');
+    Route::patch('/trip/{trip}/complete', [TripController::class, 'complete'])->name('trip.complete')->middleware('auth');
 
 });
 

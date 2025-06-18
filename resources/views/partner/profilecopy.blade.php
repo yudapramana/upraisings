@@ -27,14 +27,10 @@
                     <div class="col-md-12 text-center mb-4">
                         <h3 class="fw-bold">Profil Angkot</h3>
                     </div>
-
-                    <!-- Foto Kendaraan -->
-
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 offset-md-3">
-
                         <div class="form-container">
                             <!-- Notifikasi sukses -->
                             @if (session('success'))
@@ -54,20 +50,13 @@
                                 </div>
                             @endif
 
-
-
                             <form action="{{ route('partner.profile.update') }}" method="POST">
                                 @csrf
 
                                 <!-- Informasi Pribadi -->
                                 <div class="form-group mb-3">
-                                    <label for="name">Nama Pengguna</label>
+                                    <label for="name">Nama</label>
                                     <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $user->name) }}" required>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" value="{{ old('email', $user->email) }}" readonly>
                                 </div>
 
                                 <div class="form-group mb-3">
@@ -101,27 +90,6 @@
                                     </select>
                                 </div>
 
-                                {{-- <div class="form-group mb-3">
-                                    <label>Role</label>
-                                    <input type="text" class="form-control" value="{{ ucfirst($user->role) }}" readonly>
-                                </div> --}}
-
-                                {{-- <div class="form-group mb-3">
-                                    <label>Status Akun</label>
-                                    <input type="text" class="form-control" value="{{ ucfirst($user->account_status) }}" readonly>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label>Status Akun</label>
-                                    <div>
-                                        @if ($user->account_status === 'active')
-                                            <span class="text-success">✅ Aktif</span>
-                                        @else
-                                            <span class="text-danger">❌ Tidak Aktif</span>
-                                        @endif
-                                    </div>
-                                </div> --}}
-
                                 <hr>
 
                                 <!-- Informasi Rekening Bank -->
@@ -129,7 +97,7 @@
 
                                 <div class="form-group mb-3">
                                     <label for="bank_name">Nama Bank</label>
-                                    <select class="form-control" id="bank_name" name="bank_name" @readonly(true)>
+                                    <select class="form-control" id="bank_name" name="bank_name" required>
                                         <option value="">- Pilih Bank -</option>
                                         <option value="BCA" {{ old('bank_name', $user->bank_name) == 'BCA' ? 'selected' : '' }}>BCA (Bank Central Asia)</option>
                                         <option value="BNI" {{ old('bank_name', $user->bank_name) == 'BNI' ? 'selected' : '' }}>BNI (Bank Negara Indonesia)</option>
@@ -150,59 +118,16 @@
 
                                 <div class="form-group mb-3">
                                     <label for="account_number">Nomor Rekening / e-Wallet</label>
-                                    <input type="text" name="account_number" id="account_number" class="form-control" value="{{ old('account_number', $user->account_number) }}" readonly>
+                                    <input type="text" name="account_number" id="account_number" class="form-control" value="{{ old('account_number', $user->account_number) }}">
                                 </div>
 
                                 <div class="form-group mb-3">
                                     <label for="account_holder">Nama Pemilik Rekening</label>
-                                    <input type="text" name="account_holder" id="account_holder" class="form-control" value="{{ old('account_holder', $user->account_holder) }}" readonly>
-                                </div>
-
-                                {{-- <div class="form-group mb-3">
-                                    <label>Status Verifikasi Rekening</label>
-                                    <input type="text" class="form-control" value="{{ ucfirst($user->account_verification) }}" readonly>
-                                </div> --}}
-
-                                <hr>
-
-                                <!-- Informasi Kendaraan -->
-                                <h5>Informasi Kendaraan</h5>
-                                @if ($user->vehicle)
-                                    <div class="form-group mb-3">
-                                        <label>Plat Nomor</label>
-                                        <input type="text" class="form-control" value="{{ $user->vehicle->license_plate }}" readonly>
-                                    </div>
-
-                                    <div class="form-group mb-3">
-                                        <label>Status Kendaraan</label>
-                                        <input type="text" class="form-control" value="{{ ucfirst($user->vehicle->status) }}" readonly>
-                                    </div>
-
-                                    <div class="form-group mb-3">
-                                        <label>Foto Kendaraan</label><br>
-                                        <img src="{{ $user->vehicle->vehicle_photo }}" alt="Foto Kendaraan" class="img-thumbnail" style="max-width: 200px;">
-                                    </div>
-                                @else
-                                    <p class="text-muted">Belum ada kendaraan terdaftar.</p>
-                                @endif
-
-                                <hr>
-
-                                <!-- Informasi e-Wallet -->
-                                <h5>e-Wallet</h5>
-                                <div class="form-group mb-3">
-                                    <label>Saldo</label>
-                                    <input type="text" class="form-control" value="Rp {{ number_format($user->ewallet->balance ?? 0, 2, ',', '.') }}" readonly>
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label>QR Code String</label>
-                                    <input type="text" class="form-control" value="{{ $user->ewallet->qrcode_string ?? '-' }}" readonly>
+                                    <input type="text" name="account_holder" id="account_holder" class="form-control" value="{{ old('account_holder', $user->account_holder) }}">
                                 </div>
 
                                 <button type="submit" class="btn btn-success btn-save">Simpan Perubahan</button>
                             </form>
-
 
                             <a href="{{ route('partner.home') }}" class="btn btn-outline-secondary mt-3 d-block text-center">Kembali ke Dashboard</a>
                         </div>

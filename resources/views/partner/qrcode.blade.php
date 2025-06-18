@@ -1,6 +1,6 @@
 @extends('landing.layouts.layout')
 
-@section('title', 'QR Code Mitra')
+@section('title', 'QR Code Angkot')
 
 @section('styles')
     <style>
@@ -77,16 +77,16 @@
         <section class="spacer bg-light">
             <div class="container pt-5">
                 <div class="qr-container">
-                    <h4 class="fw-bold mb-4">QR Code Mitra Angkot</h4>
+                    <h4 class="fw-bold mb-4">QR Code Angkot</h4>
 
                     <div class="mitra-info">
-                        <h5>Informasi Mitra</h5>
+                        <h5>Informasi Angkot</h5>
                         <div class="row-info">
                             <div>Nama</div>
                             <span>{{ $user->name }}</span>
                         </div>
                         <div class="row-info">
-                            <div>ID Mitra</div>
+                            <div>ID Angkot</div>
                             <span>{{ $user->ewallet->qrcode_string }}</span>
                         </div>
                         <div class="row-info">

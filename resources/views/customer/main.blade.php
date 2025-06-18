@@ -5,18 +5,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <style>
         .list {
-            /* background: #bab9b9; */
             display: grid;
             grid-gap: 5px;
             padding: 5px 0;
-            /* height: 180px; */
-            /* overflow-y: auto; */
         }
 
         .list div[class^="item"] {
             display: flex;
             justify-content: space-between;
-            /* background: #e3e1e1; */
             padding: 10px 0;
             border-top: 1px solid rgba(0, 0, 0, .125);
         }
@@ -63,85 +59,84 @@
 
 @section('content')
     <div class="content-wrapper">
-        <!-- ============================================================== -->
-        <!-- Demos part -->
-        <!-- ============================================================== -->
         <section class="spacer bg-light">
-
-            <div class="container pt-5">
-                <div class="row">
+            <div class="container pt-4">
+                <div class="row justify-content-center">
                     <!-- Info Saldo -->
-                    <div class="col-md-12 mb-4">
+                    <div class="col-md-6">
                         <div class="card shadow-sm">
                             <div class="card-body text-center">
                                 <h5 class="card-title">Saldo eWallet Anda</h5>
                                 <h3 class="fw-bold text-success">Rp {{ number_format($balance, 2, ',', '.') }}</h3>
                                 <p>Status: <span class="badge bg-success">Aktif</span></p>
                                 <a href="{{ route('topup') }}" class="btn btn-success btn-sm">Isi Saldo</a>
-                                <a href="{{ route('pay') }}" class="btn btn-primary btn-sm">Bayar Angkot</a>
+
+                                <a href="{{ $balance >= 5000 ? route('ride') : '#' }}" class="btn btn-primary btn-sm {{ $balance < 5000 ? 'disabled' : '' }}" {{ $balance < 5000 ? 'aria-disabled=true' : '' }}>
+                                    Naik Angkot
+                                </a>
+
+                                @if ($balance < 5000)
+                                    <small class="text-danger d-block mt-1">Saldo minimal Rp5.000 untuk naik angkot.</small>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Riwayat Transaksi Terbaru -->
-                <div class="row">
-                    <div class="col-md-8 mb-4">
+                <!-- Riwayat Aktivitas Terbaru -->
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
                         <div class="card shadow-sm">
-
                             <div class="card-body">
-                                <h5 class="card-title">Riwayat Transaksi Terbaru</h5>
+                                <h5 class="card-title">Riwayat Aktivitas Terbaru</h5>
                                 <div class="list">
+                                    @forelse ($trips as $key => $trip)
+                                        <div class="item{{ $key + 1 }} px-2 d-flex justify-content-between align-items-center">
+                                            <span style="display: inline-grid; text-align: center;">
+                                                <span class="text-muted" style="font-size: 0.75rem;">
+                                                    {{ $trip->created_at->format('d M, H:i') }}
+                                                </span>
+                                                <img src="http://res.cloudinary.com/dezj1x6xp/image/upload/v1750262180/PandanViewMandeh/angkotmax_pkwogi.jpg" alt="Foto Kendaraan" class="img-circle elevation-2 mt-1" width="89" style="object-fit: cover;">
+                                            </span>
 
-                                    @foreach ($transactions as $key => $transaction)
-                                        <a href="{{ route('payment.success', $transaction->id) }}" style="text-decoration: none; background-color: none;color:gray; ">
-                                            <div class="item{{ $key + 1 }} px-2">
-                                                <div class="section1">
-                                                    @if ($transaction->operation == 'minus')
-                                                        <div class="icon down">
-                                                            <i class="fas fa-arrow-up"></i>
-                                                        </div>
-                                                    @else
-                                                        <div class="icon up">
-                                                            <i class="fas fa-arrow-up"></i>
-                                                        </div>
-                                                    @endif
-                                                    <div class="text">
-                                                        <div class="title">{{ $transaction->description }}</div>
-                                                        <div class="description">{{ $transaction->created_at->diffForHumans() }}</div>
+                                            <div class="pl-3 pt-2 flex-grow-1">
+                                                @php
+                                                    $locationParts = explode(',', $trip->geton_location);
+                                                    $firstTwo = array_slice($locationParts, 0, 3);
+                                                    $formattedLocation = implode(',', $firstTwo);
+                                                @endphp
+                                                <strong class="text-dark d-block">{{ $formattedLocation ?? '-' }}</strong>
+
+                                                @if ($trip->status == 'completed')
+                                                    <div class="pt-3">
+                                                        <i class="fas fa-check-circle text-success me-1"></i> Trip Completed
                                                     </div>
-                                                </div>
-                                                <div class="section2">
-                                                    <div class="signal {{ $transaction->operation == 'plus' ? 'positive' : 'negative' }}">{{ $transaction->operation == 'plus' ? '+' : '-' }}</div>
-                                                    <div class="value">Rp{{ number_format($transaction->amount, 2, ',', '.') }}</div>
-                                                </div>
+                                                @else
+                                                    <span class="badge bg-secondary mt-1 text-uppercase">
+                                                        {{ ucfirst($trip->status) }}
+                                                    </span>
+                                                @endif
                                             </div>
-                                        </a>
-                                    @endforeach
+
+                                            <div class="section1" style="display: inline-grid; text-align: center;">
+                                                <div class="fw-bold mb-1">Rp{{ number_format($trip->trip_fare, 2, ',', '.') }}</div>
+                                                <a href="{{ route('trip.show', $trip->id) }}" class="badge badge-success text-white px-2 py-1 mt-5">
+                                                    Detail
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="text-center text-muted py-3">Belum ada riwayat aktivitas.</div>
+                                    @endforelse
                                 </div>
-                                {{-- <a href="/transactions" class="btn btn-outline-secondary btn-sm">Lihat Semua</a> --}}
                                 <a href="{{ route('transaction.list') }}" class="btn btn-outline-secondary d-block text-center mt-2">Lihat Semua</a>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Notifikasi & Promo -->
-                    <div class="col-md-4 mb-4">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title">Notifikasi & Promo</h5>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">🎉 Promo cashback 10% untuk pembayaran angkot!</li>
-                                    <li class="list-group-item">🔔 Pembaruan sistem akan dilakukan besok pukul 23:00 WIB.</li>
-                                    <li class="list-group-item">🛠️ Fitur transfer saldo akan segera hadir!</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+
             </div>
-
-
         </section>
     </div>
 @endsection

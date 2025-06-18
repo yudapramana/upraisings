@@ -32,7 +32,7 @@
 
                         <div class="col-md-12 mobile_fix">
                             <div class="card card-body">
-                                <h4 class="card-title">Formulir Pendaftaran Mitra Angkot</h4>
+                                <h4 class="card-title">Formulir Pendaftaran Angkot</h4>
                                 <h5 class="card-subtitle"> Harap diisi dengan data yang valid </h5>
                                 <form class="form-horizontal m-t-30 needs-validation" method="POST" action="{{ route('store.partner') }}" novalidate>
                                     @csrf

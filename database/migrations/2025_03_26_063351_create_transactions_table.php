@@ -23,6 +23,9 @@ return new class extends Migration
             $table->text('proof_url')->nullable();
             $table->unsignedInteger('bank_topup_id')->nullable();
             $table->enum('status', ['pending', 'completed', 'failed'])->default('completed');
+
+            // Referensi ke trip
+            $table->unsignedBigInteger('trip_id')->nullable();
             $table->timestamps();
         });
     }

@@ -32,6 +32,8 @@ class User extends Authenticatable
         'account_holder'
     ];
 
+    protected $with = ['vehicle', 'ewallet'];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -56,5 +58,10 @@ class User extends Authenticatable
     public function ewallet()
     {
         return $this->hasOne(EWallet::class);
+    }
+
+    public function vehicle()
+    {
+        return $this->hasOne(Vehicle::class);
     }
 }

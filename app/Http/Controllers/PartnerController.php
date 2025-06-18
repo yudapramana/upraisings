@@ -44,7 +44,7 @@ class PartnerController extends Controller
 
 
         return view('partner.main', [
-            'title' => 'Dashboard Mitra Angkot',
+            'title' => 'Dashboard Angkot',
             'balance' => $balance,
             'transactions' => $transactions,
             'driver' => $driver,
