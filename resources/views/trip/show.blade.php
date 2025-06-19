@@ -275,7 +275,7 @@
                                     <span>Rp {{ number_format($trip->trip_fare, 0, ',', '.') }}</span>
                                 </div>
                                 <small class="text-muted d-block" style="font-size: 0.5rem;">
-                                    *Biaya untuk perjalanan angkot berkisar antara Rp3.000 - Rp5.000
+                                    *Biaya untuk perjalanan angkot berkisar antara Rp3.000 - Rp7.000 sesuai jarak tempuh per-Km
                                 </small>
 
                                 <hr />
