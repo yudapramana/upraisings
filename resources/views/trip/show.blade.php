@@ -317,8 +317,12 @@
                                         </form>
                                     </div>
                                 @else
+                                    @php
+                                        $prefix = Request::segment(1); // Akan mengembalikan 'customer' atau 'partner'
+                                    @endphp
+
                                     <div class="mt-4 d-flex gap-2">
-                                        <a href="{{ route('customer.home') }}" class="btn btn-outline-primary w-100">
+                                        <a href="{{ route($prefix . '.home') }}" class="btn btn-outline-primary w-100">
                                             Beranda
                                         </a>
                                         <button class="btn btn-secondary w-100" disabled>

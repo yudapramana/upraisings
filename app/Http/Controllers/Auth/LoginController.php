@@ -73,4 +73,22 @@ class LoginController extends Controller
  
         return redirect('login')->withSuccess('Berhasil Logout!');
     }
+
+    protected function redirectTo()
+    {
+        $role = auth()->user()->role;
+
+        switch ($role) {
+            case 'admin':
+                return route('admin.home');
+            case 'approval':
+                return route('approval.home');
+            case 'partner':
+                return route('partner.home');
+            case 'customer':
+                return route('customer.home');
+            default:
+                return route('index');
+        }
+    }
 }

@@ -81,55 +81,120 @@
 @section('content')
     <div class="content-wrapper">
         <section class="spacer bg-light">
-            <div class="container pt-5">
-                <div class="row">
+            <div class="container pt-4">
+                <div class="row justify-content-center">
                     <!-- Info Saldo Mitra -->
-                    <div class="col-md-12 mb-4">
+                    <div class="col-md-6">
                         <div class="card shadow-sm">
                             <div class="card-body text-center">
-                                <h5 class="card-title">Saldo eWallet Mitra</h5>
+                                <h5 class="card-title">Saldo Angkot</h5>
                                 <h3 class="fw-bold text-success">Rp {{ number_format($balance, 2, ',', '.') }}</h3>
                                 <p>Status: <span class="badge bg-success">Aktif</span></p>
                                 <a href="{{ route('partner.withdraw') }}" class="btn btn-success btn-sm">Tarik Saldo</a>
-                                <a href="" class="btn btn-primary btn-sm">Riwayat Transaksi</a>
+                                <a href="{{ route('transaction.list.partner') }}" class="btn btn-primary btn-sm">Riwayat Saldo</a>
                                 <a href="{{ route('partner.profile') }}" class="btn btn-info btn-sm">Lihat Profil</a> <!-- Tambahan Button -->
                                 <a href="{{ route('partner.qrcode') }}" class="btn btn-warning btn-sm">Lihat QR Code</a>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row justify-content-center">
 
                     <!-- Ringkasan Pendapatan -->
-                    <div class="col-md-12 mb-4">
+                    <div class="col-md-6">
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title">Ringkasan Pendapatan</h5>
                                 <div class="row">
-                                    <div class="col-md-4 text-center">
+                                    <div class="col-md-4 col-sm-4 col-xs-4 text-center">
                                         <div class="card-summary">
                                             <h6>Hari Ini</h6>
-                                            <div class="amount">Rp {{ number_format($totalToday, 2, ',', '.') }}</div>
+                                            <div class="amount" style="font-size: 0.7rem">Rp {{ number_format($totalToday, 2, ',', '.') }}</div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 text-center">
+
+                                    <div class="col-md-4 col-sm-4 col-xs-4 text-center d-none d-md-block">
                                         <div class="card-summary">
                                             <h6>Minggu Ini</h6>
-                                            <div class="amount">Rp {{ number_format($totalWeek, 2, ',', '.') }}</div>
+                                            <div class="amount" style="font-size: 0.7rem">Rp {{ number_format($totalWeek, 2, ',', '.') }}</div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 text-center">
+
+                                    <div class="col-md-4 col-sm-4 col-xs-4 text-center d-none d-md-block">
                                         <div class="card-summary">
                                             <h6>Bulan Ini</h6>
-                                            <div class="amount">Rp {{ number_format($totalMonth, 2, ',', '.') }}</div>
+                                            <div class="amount" style="font-size: 0.7rem">Rp {{ number_format($totalMonth, 2, ',', '.') }}</div>
                                         </div>
                                     </div>
                                 </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Riwayat Aktivitas Terbaru -->
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Riwayat Aktivitas Terbaru</h5>
+                                <div class="list">
+                                    @forelse ($trips as $key => $trip)
+                                        <div class="item{{ $key + 1 }} px-2 d-flex justify-content-between align-items-center">
+                                            <span style="display: inline-grid; text-align: center;">
+                                                <span class="text-muted" style="font-size: 0.75rem;">
+                                                    {{ $trip->created_at->format('d M, H:i') }}
+                                                </span>
+                                                <img src="http://res.cloudinary.com/dezj1x6xp/image/upload/v1750262180/PandanViewMandeh/angkotmax_pkwogi.jpg" alt="Foto Kendaraan" class="img-circle elevation-2 mt-1" width="89" style="object-fit: cover;">
+                                            </span>
+
+                                            <div class="pl-3 pt-2 flex-grow-1">
+                                                <div>
+                                                    <span class="badge border rounded text-dark font-weight-bold" style=" border-bottom-color: {{ $trip->color }} !important; border-bottom-width: 3px !important; font-size: 0.5rem;">
+                                                        <i class="fas fa-shuttle-van me-1" style="font-size: 0.7rem;"></i>
+                                                        {{ $trip->route_number }}
+                                                    </span>
+                                                </div>
+                                                @php
+                                                    $locationParts = explode(',', $trip->getoff_location);
+                                                    $firstTwo = array_slice($locationParts, 0, 3);
+                                                    $formattedLocation = implode(',', $firstTwo);
+                                                @endphp
+                                                <strong class="text-dark d-block">{{ $formattedLocation ?? '-' }}</strong>
+
+                                                @if ($trip->status == 'completed')
+                                                    <div class="pt-4">
+
+                                                        <i class="fas fa-check-circle text-success me-1"></i> Trip Completed
+                                                    </div>
+                                                @else
+                                                    <span class="badge bg-secondary mt-1 text-uppercase">
+                                                        {{ ucfirst($trip->status) }}
+                                                    </span>
+                                                @endif
+                                            </div>
+
+                                            <div class="section1" style="display: inline-grid; text-align: center;">
+                                                <div class="fw-bold mb-1">Rp{{ number_format($trip->trip_fare, 2, ',', '.') }}</div>
+                                                <a href="{{ route('trip.show.partner', $trip->id) }}" class="badge badge-success text-white px-2 py-1 mt-5">
+                                                    Detail
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="text-center text-muted py-3">Belum ada riwayat aktivitas.</div>
+                                    @endforelse
+                                </div>
+                                <a href="{{ route('trip.list.partner') }}" class="btn btn-outline-secondary d-block text-center mt-2">Lihat Semua</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Riwayat Pembayaran -->
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-md-8 mb-4">
                         <div class="card shadow-sm">
 
@@ -161,26 +226,12 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                {{-- <a href="/transactions" class="btn btn-outline-secondary btn-sm">Lihat Semua</a> --}}
                                 <a href="" class="btn btn-outline-secondary d-block text-center mt-2">Lihat Semua</a>
                             </div>
                         </div>
                     </div>
+                </div> --}}
 
-                    <!-- Notifikasi & Promo -->
-                    <div class="col-md-4 mb-4">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title">Notifikasi & Promo</h5>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">🎉 Promo cashback 10% untuk pembayaran angkot!</li>
-                                    <li class="list-group-item">🔔 Pembaruan sistem akan dilakukan besok pukul 23:00 WIB.</li>
-                                    <li class="list-group-item">🛠️ Fitur transfer saldo akan segera hadir!</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
     </div>

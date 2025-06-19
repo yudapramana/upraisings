@@ -49,13 +49,17 @@ Route::post('store-customer', [RegisterController::class, 'storeCustomer'])->nam
 Route::group(['prefix' => 'partner', 'middleware' => ['auth', 'user-access:partner']], function(){
     Route::get('/', [PartnerController::class, 'index'])->name('partner.home');
 
-    Route::get('/profile', [ProfileController::class, 'index'])->name('partner.profile');
-    Route::post('/profile/update', [ProfileController::class, 'update'])->name('partner.profile.update');
+    Route::get('/profile', [ProfileController::class, 'indexPartner'])->name('partner.profile');
+    Route::post('/profile/update', [ProfileController::class, 'updatePartner'])->name('partner.profile.update');
 
     Route::get('/withdraw', [PartnerController::class, 'withdraw'])->name('partner.withdraw');
     Route::post('/withdraw/process', [PartnerController::class, 'withdrawProcess'])->name('partner.withdraw.process');
 
     Route::get('/qrcode', [PartnerController::class, 'showQr'])->name('partner.qrcode');
+    Route::get('/trip-list-partner', [TripController::class, 'indexPartner'])->name('trip.list.partner');
+    Route::get('/trip/{id?}', [TripController::class, 'showPartner'])->name('trip.show.partner');
+    Route::get('/transaction/list', [WalletController::class, 'transactions'])->name('transaction.list.partner');
+
 
 });
 
@@ -63,11 +67,14 @@ Route::group(['prefix' => 'partner', 'middleware' => ['auth', 'user-access:partn
 // Route::middleware(['auth', 'user-access:customer'])->group(function () {
 Route::group(['prefix' => 'customer', 'middleware' => ['auth', 'user-access:customer', 'check.ongoing.trip']], function(){
     Route::get('/', [CustomerController::class, 'index'])->name('customer.home');
+    Route::get('/profile', [ProfileController::class, 'indexCustomer'])->name('customer.profile');
+    Route::post('/profile/update', [ProfileController::class, 'updateCustomer'])->name('customer.profile.update');
+    
     Route::get('/topup', [WalletController::class, 'showTopUpForm'])->name('topup');
     Route::post('/topup', [WalletController::class, 'processTopUp'])->name('topup.process');
     Route::post('/topup/upload/{topupId}', [WalletController::class, 'uploadProof'])->name('topup.upload');
     Route::post('/topup/{topupId}/submit-proof', [WalletController::class, 'submitProof'])->name('topup.submitProof');
-    Route::get('/transaction/list', [WalletController::class, 'transactions'])->name('transaction.list');
+    Route::get('/transaction/list', [WalletController::class, 'transactions'])->name('transaction.list.customer');
 
 
 
@@ -80,7 +87,7 @@ Route::group(['prefix' => 'customer', 'middleware' => ['auth', 'user-access:cust
 
     Route::get('/angkot/{id}', [AngkotController::class, 'getAngkot'])->name('angkot.get');
 
-    Route::get('/trip/{id?}', [TripController::class, 'show'])->name('trip.show');
+    Route::get('/trip/{id?}', [TripController::class, 'show'])->name('trip.show.customer');
     Route::patch('/trip/{trip}/complete', [TripController::class, 'complete'])->name('trip.complete')->middleware('auth');
     Route::get('/trip-list', [TripController::class, 'index'])->name('trip.list');
 

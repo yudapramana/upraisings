@@ -98,7 +98,11 @@
 
                                             <div style="display: inline-grid; text-align: center;">
                                                 <div class="fw-bold mb-1">Rp{{ number_format($trip->trip_fare, 2, ',', '.') }}</div>
-                                                <a href="{{ route('trip.show', $trip->id) }}" class="badge badge-success text-white px-2 py-1 mt-5">
+
+                                                @php
+                                                    $prefix = Request::segment(1); // Akan mengembalikan 'customer' atau 'partner'
+                                                @endphp
+                                                <a href="{{ route('trip.show.' . $prefix, $trip->id) }}" class="badge badge-success text-white px-2 py-1 mt-5">
                                                     Detail
                                                 </a>
                                             </div>
@@ -107,7 +111,11 @@
                                         <div class="text-center text-muted py-3">Belum ada riwayat aktivitas.</div>
                                     @endforelse
                                 </div>
-                                <a href="{{ route('customer.home') }}" class="btn btn-outline-secondary d-block text-center mt-2">🔙 Kembali</a>
+
+                                @php
+                                    $prefix = Request::segment(1); // Akan mengembalikan 'customer' atau 'partner'
+                                @endphp
+                                <a href="{{ route($prefix . '.home') }}" class="btn btn-outline-secondary d-block text-center mt-2">🔙 Kembali</a>
                             </div>
                         </div>
                     </div>

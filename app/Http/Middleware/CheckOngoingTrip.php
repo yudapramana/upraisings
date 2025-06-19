@@ -20,7 +20,7 @@ class CheckOngoingTrip
 
             // Jika user memiliki trip ongoing dan bukan di halaman terkait trip
             if ($ongoingTrip && !str_contains($request->path(), 'trip')) {
-                return redirect()->route('trip.show', $ongoingTrip->id)
+                return redirect()->route('trip.show.customer', $ongoingTrip->id)
                                 ->with('warning', 'Selesaikan perjalanan Anda terlebih dahulu.');
             }
         }

@@ -48,22 +48,19 @@
                         </div>
                     </div>
 
-                    <p class="mb-1">
+                    {{-- <p class="mb-1">
                         @if (Route::has('password.request'))
                             <a href="{{ route('password.request') }}">
                                 I forgot my password
                             </a>
                         @endif
-                    </p>
-                    <p class="mb-0">
-                        <a href="{{ route('register') }}">Register a new membership</a>
-                    </p>
+                    </p> --}}
 
                     <div class="mt-3">
                         <label class="d-block mb-2">Login Demo:</label>
                         <div class="d-flex justify-content-between flex-wrap gap-2">
-                            <button type="button" class="btn btn-outline-info btn-sm mb-2" onclick="fillDemo('customer1')">Rider_1</button>
-                            <button type="button" class="btn btn-outline-info btn-sm mb-2" onclick="fillDemo('customer2')">Rider_2</button>
+                            <button type="button" class="btn btn-outline-info btn-sm mb-2" onclick="fillDemo('customer1')">User_1</button>
+                            <button type="button" class="btn btn-outline-info btn-sm mb-2" onclick="fillDemo('customer2')">User_2</button>
                             <button type="button" class="btn btn-outline-success btn-sm mb-2" onclick="fillDemo('partner1')">Angkot_1</button>
                             <button type="button" class="btn btn-outline-success btn-sm mb-2" onclick="fillDemo('partner2')">Angkot_2</button>
                             <button type="button" class="btn btn-outline-success btn-sm mb-2" onclick="fillDemo('partner3')">Angkot_3</button>
@@ -98,8 +95,8 @@
             partner1: '12345678',
             partner2: 'rinamarlina',
             partner3: 'dedisurya',
-            partner4: 'taufik123',
-            partner5: '12345678',
+            partner4: 'nurjanah2024',
+            partner5: 'taufik123',
             approval: 'approval'
         };
 

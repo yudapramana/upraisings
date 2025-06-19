@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -42,6 +43,11 @@ class PartnerController extends Controller
                             ->where('status', 'completed')
                             ->sum('amount');
 
+        $trips = \App\Models\Trip::where('partner_id', Auth::user()->id)
+                ->latest()
+                ->take(5)
+                ->get();
+
 
         return view('partner.main', [
             'title' => 'Dashboard Angkot',
@@ -52,6 +58,7 @@ class PartnerController extends Controller
             'totalToday' => $totalToday,
             'totalWeek' => $totalWeek,
             'totalMonth' => $totalMonth,
+            'trips' => $trips,
         ]);
     }
 
@@ -101,13 +108,15 @@ class PartnerController extends Controller
 
     public function showQr()
     {
-        $user = Auth::user();
+        $userAuth = Auth::user();
+        $user = User::with('vehicle.angkotType', 'ewallet')->find($userAuth->id);
         $wallet = $user->ewallet;
+
 
         // String unik, misalnya pakai UUID, ID, atau apa pun yang kamu mau
         $uniqueData = $wallet->qrcode_string; // contoh kombinasi
 
-        $qrCode = QrCode::size(300)->generate($uniqueData);
+        $qrCode = QrCode::size(250)->generate($uniqueData);
 
         return view('partner.qrcode', compact('qrCode', 'user'));
     }

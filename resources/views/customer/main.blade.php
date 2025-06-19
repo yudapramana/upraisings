@@ -74,8 +74,8 @@
                                 <a href="{{ $balance >= 5000 ? route('ride') : '#' }}" class="btn btn-primary btn-sm {{ $balance < 5000 ? 'disabled' : '' }}" {{ $balance < 5000 ? 'aria-disabled=true' : '' }}>
                                     Naik Angkot
                                 </a>
-                                <a href="{{ route('transaction.list') }}" class="btn btn-secondary btn-sm">Riwayat Topup</a>
-
+                                <a href="{{ route('transaction.list.customer') }}" class="btn btn-secondary btn-sm">Riwayat Topup</a>
+                                <a href="{{ route('customer.profile') }}" class="btn btn-info btn-sm">Profil</a> <!-- Tambahan Button -->
 
                                 @if ($balance < 5000)
                                     <small class="text-danger d-block mt-1">Saldo minimal Rp5.000 untuk naik angkot.</small>
@@ -129,7 +129,7 @@
 
                                             <div class="section1" style="display: inline-grid; text-align: center;">
                                                 <div class="fw-bold mb-1">Rp{{ number_format($trip->trip_fare, 2, ',', '.') }}</div>
-                                                <a href="{{ route('trip.show', $trip->id) }}" class="badge badge-success text-white px-2 py-1 mt-5">
+                                                <a href="{{ route('trip.show.customer', $trip->id) }}" class="badge badge-success text-white px-2 py-1 mt-5">
                                                     Detail
                                                 </a>
 

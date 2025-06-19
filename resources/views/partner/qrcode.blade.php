@@ -75,7 +75,7 @@
 @section('content')
     <div class="content-wrapper">
         <section class="spacer bg-light">
-            <div class="container pt-5">
+            <div class="container pt-4">
                 <div class="qr-container">
                     <h4 class="fw-bold mb-4">QR Code Angkot</h4>
 
@@ -85,18 +85,27 @@
                             <div>Nama</div>
                             <span>{{ $user->name }}</span>
                         </div>
-                        <div class="row-info">
+                        {{-- <div class="row-info">
                             <div>ID Angkot</div>
                             <span>{{ $user->ewallet->qrcode_string }}</span>
+                        </div> --}}
+                        <div class="row-info">
+                            <div>Plat Nomor</div>
+                            <span>{{ $user->vehicle->license_plate }}</span>
+                        </div>
+                        <div class="row-info">
+                            <div>Trayek</div>
+                            <span>{{ $user->vehicle->angkotType->route_number }}</span>
+                        </div>
+                        <div class="row-info">
+                            <div>Rute</div>
+                            <span class="text-small" style="font-size: 0.85rem;">{{ $user->vehicle->angkotType->route_name }}</span>
                         </div>
                         <div class="row-info">
                             <div>No. HP</div>
-                            <span>{{ $user->phone ?? '-' }}</span>
+                            <span>{{ $user->mobile_phone ?? '-' }}</span>
                         </div>
-                        <div class="row-info">
-                            <div>Saldo eWallet</div>
-                            <span>Rp {{ number_format($user->eWallet->balance, 2, ',', '.') }}</span>
-                        </div>
+
                     </div>
 
                     <div class="qr-code mb-4">

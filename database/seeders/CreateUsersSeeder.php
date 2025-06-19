@@ -62,7 +62,7 @@ class CreateUsersSeeder extends Seeder
             ],
             [
                 'name'          => 'Annisa Sabrina',
-                'email'         => 'Annsab@gmail.com',
+                'email'         => 'annsab@gmail.com',
                 'role'          => 'customer',
                 'password'      => Hash::make('customer'),
                 'created_at'    => date('Y-m-d H:i:s'),

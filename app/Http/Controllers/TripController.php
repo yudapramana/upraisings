@@ -23,6 +23,17 @@ class TripController extends Controller
         return view('trip.list', compact('trips'));
     }
 
+    public function indexPartner()
+    {
+        $user = Auth::user();
+
+        $trips = Trip::where('partner_id', $user->id)
+                    ->orderBy('created_at', 'desc')
+                    ->take(10)->get();
+
+        return view('trip.list', compact('trips'));
+    }
+
 
     public function show($id = null)
     {
@@ -43,7 +54,20 @@ class TripController extends Controller
                 }
         }
 
-        // dd($trip);
+        return view('trip.show', compact('trip'));
+    }
+
+    public function showPartner($id = null)
+    {
+        if($id) {
+            $trip = Trip::where('id', $id)
+                        ->where('partner_id', Auth::id()) // keamanan: hanya boleh lihat trip milik sendiri
+                        ->firstOrFail();
+
+        return view('trip.show', compact('trip'));
+        } else {
+            return redirect()->route('partner.home');
+        }
 
         return view('trip.show', compact('trip'));
     }
@@ -120,7 +144,7 @@ class TripController extends Controller
             'distance' => $distance,
         ]);
 
-        return redirect()->route('trip.show', $trip->id)->with('success', 'Perjalanan diselesaikan.');
+        return redirect()->route('trip.show.customer', $trip->id)->with('success', 'Perjalanan diselesaikan.');
     }
 
 

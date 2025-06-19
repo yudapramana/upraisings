@@ -20,7 +20,10 @@
                         @endif
 
                         <!-- Filter Form -->
-                        <form action="{{ route('transaction.list') }}" method="GET" class="row g-2 mb-3">
+                        @php
+                            $prefix = Request::segment(1); // Akan mengembalikan 'customer' atau 'partner'
+                        @endphp
+                        <form action="{{ route('transaction.list.' . $prefix) }}" method="GET" class="row g-2 mb-3">
                             <div class="col-12">
                                 <div class="row g-2">
                                     <div class="col-12 col-md-6">
@@ -39,8 +42,8 @@
                                                 <label for="type" class="form-label mb-0 small">Jenis Transaksi</label>
                                                 <select name="type" id="type" class="form-select form-select-sm form-control form-control-sm">
                                                     <option value="">Semua Jenis</option>
-                                                    <option value="plus" {{ request('type') == 'plus' ? 'selected' : '' }}>Top-up</option>
-                                                    <option value="minus" {{ request('type') == 'minus' ? 'selected' : '' }}>Pembayaran</option>
+                                                    <option value="plus" {{ request('type') == 'plus' ? 'selected' : '' }}>Penerimaan</option>
+                                                    <option value="minus" {{ request('type') == 'minus' ? 'selected' : '' }}>Penarikan</option>
                                                 </select>
                                             </div>
 
@@ -55,7 +58,9 @@
                                 </div>
                             </div>
                         </form>
-
+                        @php
+                            $prefix = Request::segment(1); // Akan mengembalikan 'customer' atau 'partner'
+                        @endphp
 
 
                         <!-- Transaksi List -->
@@ -66,7 +71,11 @@
                                         <div class="d-flex justify-content-between">
                                             <div>
                                                 <strong>
-                                                    {{ $trx->operation == 'plus' ? '⬆️ Top-up' : '⬇️ Pembayaran' }}
+                                                    @if ($prefix == 'customer')
+                                                        {{ $trx->operation == 'plus' ? '⬆️ Top-up' : '⬇️ Pembayaran' }}
+                                                    @else
+                                                        {{ $trx->operation == 'plus' ? '⬆️ Penerimaan' : '⬇️ Penarikan' }}
+                                                    @endif
                                                 </strong>
                                                 <br>
                                                 <small class="text-muted">{{ $trx->created_at->format('d M Y H:i') }}</small>
@@ -97,9 +106,9 @@
                                 Belum ada transaksi ditemukan.
                             </div>
                         @endif
-                        {{-- <li class="list-group-item mb-2 rounded border-light shadow-sm"> --}}
-                        <a href="{{ route('customer.home') }}" class="btn btn-secondary d-block text-center mt-2" style="bakcground-color: #fff">🔙 Kembali</a>
-                        {{-- </li> --}}
+
+                        <a href="{{ route($prefix . '.home') }}" class="btn btn-secondary d-block text-center mt-2" style="bakcground-color: #fff">🔙 Kembali</a>
+
                     </div>
                 </div>
             </div>
