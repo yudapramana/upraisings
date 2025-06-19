@@ -125,7 +125,11 @@ class WalletController extends Controller
             $query->where('operation', $request->type);
         }
 
-        $transactions = $query->take(10)->get();
+        $transactions = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        if ($request->ajax()) {
+            return view('transaction.partial._list', compact('transactions'))->render();
+        }
 
         return view('transaction.list', compact('transactions'));
     }

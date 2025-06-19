@@ -70,42 +70,18 @@
 
                         <!-- Transaksi List -->
                         @if ($transactions->count() > 0)
-                            <ul class="list-group shadow-sm">
-                                @foreach ($transactions as $trx)
-                                    <li class="list-group-item mb-2 rounded border-light shadow-sm">
-                                        <div class="d-flex justify-content-between">
-                                            <div>
-                                                <strong>
-                                                    @if ($prefix == 'customer')
-                                                        {{ $trx->operation == 'plus' ? '⬆️ Top-up' : '⬇️ Pembayaran' }}
-                                                    @else
-                                                        {{ $trx->operation == 'plus' ? '⬆️ Penerimaan' : '⬇️ Penarikan' }}
-                                                    @endif
-                                                </strong>
-                                                <br>
-                                                <small class="text-muted">{{ $trx->created_at->format('d M Y H:i') }}</small>
-                                            </div>
-                                            <div class="text-end">
-                                                <span class="fw-bold {{ $trx->operation == 'plus' ? 'text-success' : 'text-danger' }}">
-                                                    Rp {{ number_format($trx->amount, 0, ',', '.') }}
-                                                </span>
-                                                <br>
-                                                <span class="badge bg-{{ $trx->status == 'completed' ? 'success' : ($trx->status == 'pending' ? 'warning text-dark' : 'danger') }}">
-                                                    {{ ucfirst($trx->status) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        @if ($trx->description)
-                                            <p class="mt-2 mb-0 small text-muted">{{ $trx->description }}</p>
-                                        @endif
-                                        @if ($trx->proof_url)
-                                            <a href="{{ $trx->proof_url }}" target="_blank" class="d-block mt-2 small text-primary">
-                                                🔗 Lihat Bukti Dukung
-                                            </a>
-                                        @endif
-                                    </li>
-                                @endforeach
+                            <!-- Daftar Transaksi -->
+                            <ul class="list-group shadow-sm" id="transaction-list">
+                                @include('transaction.partial._list', ['transactions' => $transactions])
                             </ul>
+
+                            @if ($transactions->hasMorePages())
+                                <div class="d-flex justify-content-center mt-3">
+                                    <button id="loadMoreBtn" class="btn btn-outline-primary btn-sm">
+                                        🔽 Muat Transaksi Sebelumnya
+                                    </button>
+                                </div>
+                            @endif
                         @else
                             <div class="alert alert-info text-center">
                                 Belum ada transaksi ditemukan.
@@ -119,4 +95,40 @@
             </div>
         </section>
     </div>
+@endsection
+
+
+@section('scripts')
+    <script>
+        let currentPage = 1;
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', function() {
+                currentPage++;
+                loadMoreBtn.innerText = '⏳ Memuat...';
+                loadMoreBtn.disabled = true;
+
+                const url = new URL(window.location.href);
+                url.searchParams.set('page', currentPage);
+
+                fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('transaction-list').insertAdjacentHTML('beforeend', data);
+                        loadMoreBtn.innerText = '🔽 Muat Transaksi Sebelumnya';
+                        loadMoreBtn.disabled = false;
+
+                        // Sembunyikan tombol kalau sudah halaman terakhir
+                        if (!data.includes('list-group-item')) {
+                            loadMoreBtn.style.display = 'none';
+                        }
+                    });
+            });
+        }
+    </script>
 @endsection
