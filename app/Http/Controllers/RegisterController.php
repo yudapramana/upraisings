@@ -182,11 +182,14 @@ class RegisterController extends Controller {
     public function storeCustomer(Request $request)
     {
         try {
+
+            // dd($request->all());
             // Validasi input dari form
             $validator = Validator::make($request->all(), [
                 'nama_lengkap' => 'required|string|max:255',
                 'mobile_phone' => ['required', 'string', 'regex:/^(\+62|62|0)[0-9]{9,12}$/', 'unique:users,mobile_phone'],
-                'email' => 'required|email|unique:users,email'
+                'email' => 'required|email|unique:users,email',
+                // 'password' => 'required|min:6',
             ], [
                 'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
                 'mobile_phone.required' => 'Nomor HP wajib diisi.',
@@ -210,7 +213,7 @@ class RegisterController extends Controller {
             $customer = User::create([
                 'name' => $request->nama_lengkap,
                 'mobile_phone' => $request->mobile_phone,
-                'password' => Hash::make($request->password ?? 'defaultpassword'), // Pastikan password tidak kosong
+                'password' => Hash::make($request->password), // Pastikan password tidak kosong
                 'email' => $request->email,
                 'role' => 'customer'
             ]);

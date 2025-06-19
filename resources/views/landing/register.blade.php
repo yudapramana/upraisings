@@ -235,6 +235,11 @@
                                         </div>
 
                                         <div class="form-group">
+                                            <label>Password</label>
+                                            <input type="password" name="password" id="password" class="form-control" required="">
+                                        </div>
+
+                                        <div class="form-group">
                                             <label class="col-xs-3 control-label">Ketentuan Penggunaan</label>
                                             <div class="col-xs-9">
                                                 <div style="border: 1px solid #e5e5e5; height: 100px; overflow: auto; padding: 10px;">
@@ -255,8 +260,9 @@
                                             <div class="invalid-feedback">Anda harus menyetujui syarat dan ketentuan sebelum melanjutkan.</div>
                                         </div>
 
-                                        <button type="submit" class="btn btn-custom btn-info btn-lg btn-block">
-                                            Lanjut Daftar
+                                        <button type="submit" id="submitBtn" class="btn btn-custom btn-info btn-lg btn-block">
+                                            <span class="spinner-border spinner-border-sm me-2 d-none" id="loadingSpinner" role="status" aria-hidden="true"></span>
+                                            <span id="btnText">Lanjut Daftar</span>
                                         </button>
                                     </form>
 
@@ -308,21 +314,36 @@
         document.getElementById('customerForm').addEventListener('submit', async function(event) {
             event.preventDefault();
 
+            // Get elements
+            const submitBtn = document.getElementById('submitBtn');
+            const spinner = document.getElementById('loadingSpinner');
+            const btnText = document.getElementById('btnText');
+
+            // Disable tombol & tampilkan spinner
+            submitBtn.disabled = true;
+            spinner.classList.remove('d-none');
+            btnText.innerText = 'Memproses...';
+
             // Get form values
             let nama_lengkap = document.getElementById('nama_lengkap').value;
             let mobile_phone = document.getElementById('mobile_phone').value;
             let email = document.getElementById('email').value;
+            let password = document.getElementById('password').value;
             let agree = document.getElementById('agree').checked;
 
             if (!agree) {
                 document.getElementById('notification').innerHTML = '<div class="alert alert-danger">Anda harus menyetujui syarat dan ketentuan.</div>';
+                submitBtn.disabled = false;
+                spinner.classList.add('d-none');
+                btnText.innerText = 'Lanjut Daftar';
                 return;
             }
 
             let requestData = {
                 nama_lengkap: nama_lengkap,
-                mobile_phone: '+62' + mobile_phone,
-                email: email
+                mobile_phone: '0' + mobile_phone,
+                email: email,
+                password: password
             };
 
             try {
@@ -360,6 +381,11 @@
             } catch (error) {
                 document.getElementById('notification').innerHTML = '<div class="alert alert-danger">Terjadi kesalahan. Coba lagi.</div>';
             }
+
+            // Aktifkan kembali tombol dan sembunyikan spinner
+            submitBtn.disabled = false;
+            spinner.classList.add('d-none');
+            btnText.innerText = 'Lanjut Daftar';
         });
     </script>
 

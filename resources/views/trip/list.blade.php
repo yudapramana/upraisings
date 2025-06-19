@@ -78,6 +78,12 @@
                                             </span>
 
                                             <div class="pl-3 pt-2 flex-grow-1">
+                                                <div>
+                                                    <span class="badge border rounded text-dark font-weight-bold" style=" border-bottom-color: {{ $trip->color }} !important; border-bottom-width: 3px !important; font-size: 0.5rem;">
+                                                        <i class="fas fa-shuttle-van me-1" style="font-size: 0.7rem;"></i>
+                                                        {{ $trip->route_number }}
+                                                    </span>
+                                                </div>
                                                 @php
                                                     $locationParts = explode(',', $trip->getoff_location);
                                                     $firstTwo = array_slice($locationParts, 0, 3);

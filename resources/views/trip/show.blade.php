@@ -129,6 +129,15 @@
 
                                 <h6 class="text-muted">Detail Transaksi</h6>
 
+
+                                @if (Request::segment(1) == 'partner')
+                                    <div class="d-flex justify-content-between flex-wrap gap-2">
+                                        <span class="text-dark font-weight-bold">Dinaiki oleh</span>
+                                        <span>{{ $trip->user->name }}</span>
+                                    </div>
+                                @endif
+
+
                                 <div class="d-flex justify-content-between flex-wrap gap-2">
                                     <span class="text-dark font-weight-bold">Waktu Naik</span>
                                     <span>{{ $trip->created_at->format('d M, h:i A') }}</span>
@@ -138,7 +147,7 @@
                                     <span class="text-dark font-weight-bold">
                                         Trip {{ ucfirst($trip->status) }}
                                     </span>
-                                    <span>TRX-142309-7796918</span>
+                                    <span>{{ $trip->trip_transaction_id }}</span>
                                 </div>
 
                                 <hr />

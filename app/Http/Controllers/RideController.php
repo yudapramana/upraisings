@@ -29,6 +29,7 @@ class RideController extends Controller
             'geton_location' => 'required',
             'geton_latitude' => 'required',
             'geton_longitude' => 'required',
+            'trip_transaction_id' => 'prohibited',
         ]);
 
         $ewallet = EWallet::where('qrcode_string', $request->qrcode_string)->with('user.vehicle.angkotType')->first();

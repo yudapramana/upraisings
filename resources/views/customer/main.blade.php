@@ -74,7 +74,7 @@
                                 <a href="{{ $balance >= 5000 ? route('ride') : '#' }}" class="btn btn-primary btn-sm {{ $balance < 5000 ? 'disabled' : '' }}" {{ $balance < 5000 ? 'aria-disabled=true' : '' }}>
                                     Naik Angkot
                                 </a>
-                                <a href="{{ route('transaction.list.customer') }}" class="btn btn-secondary btn-sm">Riwayat Topup</a>
+                                <a href="{{ route('transaction.list.customer') }}" class="btn btn-secondary btn-sm">Riwayat Saldo</a>
                                 <a href="{{ route('customer.profile') }}" class="btn btn-info btn-sm">Profil</a> <!-- Tambahan Button -->
 
                                 @if ($balance < 5000)

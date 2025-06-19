@@ -19,6 +19,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RideController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\WalletController;
+use App\Models\Trip;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 
@@ -36,6 +37,13 @@ Route::get('phpmyinfo', function () {
     phpinfo(); 
 })->name('phpmyinfo');
 
+Route::get('filltriptrxid', function() {
+Trip::whereNull('trip_transaction_id')->get()->each(function ($trip) {
+    $trip->trip_transaction_id = Trip::generateTransactionId();
+    $trip->save();
+});
+return 'done';
+});
 
 Auth::routes();
 Route::resource('/', HomeController::class);

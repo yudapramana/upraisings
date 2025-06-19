@@ -63,8 +63,8 @@ class TripController extends Controller
             $trip = Trip::where('id', $id)
                         ->where('partner_id', Auth::id()) // keamanan: hanya boleh lihat trip milik sendiri
                         ->firstOrFail();
-
-        return view('trip.show', compact('trip'));
+            $trip->load('user');
+            $user = $trip->user;
         } else {
             return redirect()->route('partner.home');
         }
@@ -163,12 +163,25 @@ class TripController extends Controller
         return round($distance, 2); // hasil dalam km
     }
 
+    /**
+     * Hitung tarif angkot berdasarkan jarak (Padang 2022, zona).
+     *
+     * @param float $distance dalam kilometer
+     * @return int Tarif (Rp)
+     */
     private function calculateFare($distance)
     {
+       // Tarif per zona (asumsi, ganti sesuai perda resmi jika tersedia)
         if ($distance <= 5) {
             return 3000;
-        } else {
+        } elseif ($distance <= 10) {
+            return 4000;
+        } elseif ($distance <= 15) {
             return 5000;
+        } elseif ($distance <= 20) {
+            return 6000;
+        } else {
+            return 7000; // Tetap, jika >20km
         }
     }
 }

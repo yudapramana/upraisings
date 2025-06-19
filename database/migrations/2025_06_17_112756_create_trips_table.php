@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('trips', function (Blueprint $table) {
             $table->id();
+
+            $table->string('trip_transaction_id')->unique()->nullable();
             
             // Informasi lokasi
             $table->string('geton_location')->nullable();
