@@ -332,11 +332,11 @@
 
                                     <div class="mt-4 d-flex gap-2">
                                         <a href="{{ route($prefix . '.home') }}" class="btn btn-outline-primary w-100">
-                                            Beranda
+                                            Kembali Ke Beranda
                                         </a>
-                                        <button class="btn btn-secondary w-100" disabled>
+                                        {{-- <button class="btn btn-secondary w-100" disabled>
                                             Trip Selesai
-                                        </button>
+                                        </button> --}}
                                     </div>
                                 @endif
 
