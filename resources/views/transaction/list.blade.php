@@ -42,8 +42,13 @@
                                                 <label for="type" class="form-label mb-0 small">Jenis Transaksi</label>
                                                 <select name="type" id="type" class="form-select form-select-sm form-control form-control-sm">
                                                     <option value="">Semua Jenis</option>
-                                                    <option value="plus" {{ request('type') == 'plus' ? 'selected' : '' }}>Penerimaan</option>
-                                                    <option value="minus" {{ request('type') == 'minus' ? 'selected' : '' }}>Penarikan</option>
+                                                    @if (Request::segment(1) == 'partner')
+                                                        <option value="plus" {{ request('type') == 'plus' ? 'selected' : '' }}>Penerimaan</option>
+                                                        <option value="minus" {{ request('type') == 'minus' ? 'selected' : '' }}>Penarikan</option>
+                                                    @else
+                                                        <option value="plus" {{ request('type') == 'plus' ? 'selected' : '' }}>Top Up</option>
+                                                        <option value="minus" {{ request('type') == 'minus' ? 'selected' : '' }}>Pembayaran</option>
+                                                    @endif
                                                 </select>
                                             </div>
 
