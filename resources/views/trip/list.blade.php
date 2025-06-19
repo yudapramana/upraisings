@@ -66,57 +66,22 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title">Riwayat Aktivitas Terbaru</h5>
-                                <div class="list">
-                                    @forelse ($trips as $key => $trip)
-                                        <div class="item{{ $key + 1 }} px-2 d-flex justify-content-between align-items-center">
-                                            <span style="display: inline-grid; text-align: center;">
-                                                <span class="text-muted" style="font-size: 0.75rem;">
-                                                    {{ $trip->created_at->format('d M, H:i') }}
-                                                </span>
-                                                <img src="http://res.cloudinary.com/dezj1x6xp/image/upload/v1750262180/PandanViewMandeh/angkotmax_pkwogi.jpg" alt="Foto Kendaraan" class="img-circle elevation-2 mt-1" width="89" style="object-fit: cover;">
 
-                                            </span>
+                                @if ($trips->count() > 0)
+                                    <div class="list" id="trip-list">
+                                        @include('trip.partials._list', ['trips' => $trips])
+                                    </div>
 
-                                            <div class="pl-3 pt-2 flex-grow-1">
-                                                <div>
-                                                    <span class="badge border rounded text-dark font-weight-bold" style=" border-bottom-color: {{ $trip->color }} !important; border-bottom-width: 3px !important; font-size: 0.5rem;">
-                                                        <i class="fas fa-shuttle-van me-1" style="font-size: 0.7rem;"></i>
-                                                        {{ $trip->route_number }}
-                                                    </span>
-                                                </div>
-                                                @php
-                                                    $locationParts = explode(',', $trip->getoff_location);
-                                                    $firstTwo = array_slice($locationParts, 0, 3);
-                                                    $formattedLocation = implode(',', $firstTwo);
-                                                @endphp
-                                                <strong class="text-dark d-block">{{ $formattedLocation ?? '-' }}</strong>
-
-                                                @if ($trip->status == 'completed')
-                                                    <div class="pt-3">
-                                                        <i class="fas fa-check-circle text-success me-1"></i> Trip Completed
-                                                    </div>
-                                                @else
-                                                    <span class="badge bg-secondary mt-1 text-uppercase">
-                                                        {{ ucfirst($trip->status) }}
-                                                    </span>
-                                                @endif
-                                            </div>
-
-                                            <div style="display: inline-grid; text-align: center;">
-                                                <div class="fw-bold mb-1">Rp{{ number_format($trip->trip_fare, 2, ',', '.') }}</div>
-
-                                                @php
-                                                    $prefix = Request::segment(1); // Akan mengembalikan 'customer' atau 'partner'
-                                                @endphp
-                                                <a href="{{ route('trip.show.' . $prefix, $trip->id) }}" class="badge badge-success text-white px-2 py-1 mt-5">
-                                                    Detail
-                                                </a>
-                                            </div>
+                                    @if ($trips->hasMorePages())
+                                        <div class="text-center mt-3">
+                                            <button id="loadMoreBtn" class="btn btn-outline-primary btn-sm">🔽 Muat Trip Sebelumnya</button>
                                         </div>
-                                    @empty
-                                        <div class="text-center text-muted py-3">Belum ada riwayat aktivitas.</div>
-                                    @endforelse
-                                </div>
+                                    @endif
+                                @else
+                                    <div class="alert alert-info text-center">
+                                        Belum ada riwayat aktivitas.
+                                    </div>
+                                @endif
 
                                 @php
                                     $prefix = Request::segment(1); // Akan mengembalikan 'customer' atau 'partner'
@@ -129,4 +94,40 @@
             </div>
         </section>
     </div>
+@endsection
+
+
+@section('scripts')
+    <script>
+        let currentPage = 1;
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', function() {
+                currentPage++;
+                loadMoreBtn.disabled = true;
+                loadMoreBtn.innerText = '⏳ Memuat...';
+
+                const url = new URL(window.location.href);
+                url.searchParams.set('page', currentPage);
+
+                fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    }).then(response => response.text())
+                    .then(data => {
+                        document.getElementById('trip-list').insertAdjacentHTML('beforeend', data);
+
+                        // Jika tidak ada lagi trip baru, sembunyikan tombol
+                        if (!data.includes('item')) {
+                            loadMoreBtn.style.display = 'none';
+                        } else {
+                            loadMoreBtn.disabled = false;
+                            loadMoreBtn.innerText = '🔽 Muat Trip Sebelumnya';
+                        }
+                    });
+            });
+        }
+    </script>
 @endsection
