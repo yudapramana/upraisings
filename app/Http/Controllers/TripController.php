@@ -29,13 +29,19 @@ class TripController extends Controller
         return view('trip.list', compact('trips'));
     }
 
-    public function indexPartner()
+    public function indexPartner(Request $request)
     {
         $user = Auth::user();
 
-        $trips = Trip::where('partner_id', $user->id)
-                    ->orderBy('created_at', 'desc')
-                    ->take(10)->get();
+        $query = Trip::where('partner_id', $user->id)
+                    ->where('created_at', '>=', now()->subMonth()) // hanya data 1 bulan terakhir
+                    ->orderBy('created_at', 'desc');
+
+        $trips = $query->paginate(5); // 5 trip per halaman
+
+        if ($request->ajax()) {
+            return view('trip.partials._list', compact('trips'))->render();
+        }
 
         return view('trip.list', compact('trips'));
     }
