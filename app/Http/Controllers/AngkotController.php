@@ -39,7 +39,7 @@ class AngkotController extends Controller
 
         $angkotTypes = AngkotType::orderBy('route_number')->get();
         $params = [
-            "titlePages"    => 'Partner need to verified List',
+            "titlePages"    => 'Manajemen - Kelola Angkot',
             "angkots"         => $angkots,
             "angkotTypes"         => $angkotTypes,
         ];

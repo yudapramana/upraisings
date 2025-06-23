@@ -179,8 +179,8 @@
 
                             {{-- Kolom Foto --}}
                             <td>
-                                @if ($row->vehicle_photo)
-                                    <img src="{{ $row->vehicle_photo }}" style="max-height:50px;" class="img-fluid rounded">
+                                @if (isset($row->vehicle))
+                                    <img src="{{ $row->vehicle->vehicle_photo ?? '-' }}" style="max-height:50px;" class="img-fluid rounded">
                                 @else
                                     -
                                 @endif
@@ -222,7 +222,7 @@
             scrollx: true,
             lengthChange: false,
             autoWidth: false,
-            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+            // buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
         }).buttons().container().appendTo('#datatable_wrapper .col-md-6:eq(0)');
         $('.needs-validation').validate({
             rules: {

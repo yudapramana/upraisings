@@ -12,7 +12,7 @@
 
                     {{-- Data Pengemudi --}}
                     <div class="form-group"><label>Nama Lengkap</label>
-                        <input name="nama_lengkap" type="text" class="form-control" required value="{{ old('nama_lengkap', $row->nama_lengkap) }}">
+                        <input name="nama_lengkap" type="text" class="form-control" required value="{{ old('name', $row->name) }}">
                     </div>
 
                     <div class="form-group"><label>Nomor HP aktif</label>
@@ -65,24 +65,24 @@
                         <select name="angkot_type_id" class="custom-select" required>
                             <option value="">-Pilih Trayek-</option>
                             @foreach ($angkotTypes as $angkot)
-                                <option value="{{ $angkot->id }}" {{ old('angkot_type_id', $row->angkot_type_id) == $angkot->id ? 'selected' : '' }}>
-                                    {{ $angkot->route_number }} - {{ $angkot->route_name }}
+                                <option value="{{ $angkot->id }}" {{ old('angkot_type_id', $row->vehicle->angkot_type_id ?? '-') == $angkot->id ? 'selected' : '' }}>
+                                    {{ $angkot->vehicle->route_number ?? 'n/a' }} - {{ $angkot->vehicle->route_name ?? 'n/a' }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="form-group"><label>Plat Nomor Kendaraan</label>
-                        <input name="license_plate" class="form-control" value="{{ old('license_plate', $row->license_plate) }}" required>
+                        <input name="license_plate" class="form-control" value="{{ old('license_plate', $row->vehicle->license_plate ?? 'n/a') }}" required>
                     </div>
 
                     <div class="form-group">
                         <label>Foto Angkot</label><br>
                         <button type="button" class="btn btn-outline-primary upload-widget-btn" data-input-id="vehicle_photo_edit_{{ $row->id }}" data-preview-id="preview_edit_{{ $row->id }}">Upload Foto</button>
-                        <input type="hidden" id="vehicle_photo_edit_{{ $row->id }}" name="vehicle_photo" value="{{ old('vehicle_photo', $row->vehicle_photo) }}">
+                        <input type="hidden" id="vehicle_photo_edit_{{ $row->id }}" name="vehicle_photo" value="{{ old('vehicle_photo', $row->vehicle->vehicle_photo ?? '-') }}">
                         <div id="preview_edit_{{ $row->id }}" class="mt-2">
-                            @if ($row->vehicle_photo)
-                                <img src="{{ $row->vehicle_photo }}" style="max-height: 150px;" class="img-fluid rounded border">
+                            @if (isset($row->vehicle))
+                                <img src="{{ $row->vehicle->vehicle_photo }}" style="max-height: 150px;" class="img-fluid rounded border">
                             @endif
                         </div>
                     </div>

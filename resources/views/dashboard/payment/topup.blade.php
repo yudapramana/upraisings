@@ -53,7 +53,7 @@
                             <td>{{ date_format($trx->created_at, 'd M Y H:i') }}</td>
                             <td>
                                 @if ($trx->status == 'pending')
-                                    <form method="POST" action="{{ route('admin.ewallet.verify', $trx->id) }}">
+                                    <form method="POST" action="{{ route('admin.ewallet.topup.verify', $trx->id) }}">
                                         @csrf
                                         @method('PUT')
                                         <button type="submit" name="action" value="approve" class="btn btn-sm btn-success">Approve</button>

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/') }}nadist/assets/images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/') }}nadist/assets/images/angkotmax.ico">
     <title>@yield('title')</title>
     <!-- Custom CSS -->
     <link href="{{ asset('/') }}nadist/dist/css/style.min.css" rel="stylesheet">

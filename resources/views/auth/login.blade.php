@@ -86,7 +86,7 @@
             partner3: 'dedi.surya@gmail.com',
             partner4: 'siti.nurjanah@gmail.com',
             partner5: 'taufik.hidayat@example.com',
-            approval: 'approval@approval.com'
+            approval: 'admin@admin.com'
         };
 
         const passwords = {
@@ -97,7 +97,7 @@
             partner3: 'dedisurya',
             partner4: 'nurjanah2024',
             partner5: 'taufik123',
-            approval: 'approval'
+            approval: 'admin'
         };
 
         document.getElementById('email').value = emails[role];

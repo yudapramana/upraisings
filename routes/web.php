@@ -34,7 +34,7 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 |
 */
 
-Route::resource('angkot', AngkotController::class)->except(['show']);
+// Route::resource('angkot', AngkotController::class)->except(['show']);
 
 Route::get('phpmyinfo', function () {
     phpinfo(); 
@@ -114,7 +114,15 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::resource('admin/users', UsersController::class);
     Route::resource('admin/vehicle', VehicleController::class);
     Route::resource('admin/submission-list', SubmissionListController::class);
+    Route::resource('admin/angkot', AngkotController::class)->except(['show']);
+    Route::get('/admin/angkot/verification', [ApprovalPartnerController::class, 'index'])->name('partner-verification.index');
 
+    Route::get('/admin/wallet/topup/verification', [ApprovalPaymentController::class, 'topup'])->name('admin.ewallet.topup');
+    Route::put('/admin/wallet/topup/verification/{id}', [ApprovalPaymentController::class, 'verifyTopup'])->name('admin.ewallet.topup.verify');
+
+
+    Route::get('/admin/wallet/withdraw/verification', [ApprovalPaymentController::class, 'withdraw'])->name('admin.ewallet.withdraw');
+    Route::put('/admin/wallet/withdraw/verification/{id}', [ApprovalPaymentController::class, 'verifyWithdraw'])->name('admin.ewallet.withdraw.verify');
 });
 
 
@@ -130,8 +138,8 @@ Route::middleware(['auth', 'user-access:approval'])->group(function () {
     Route::put('/approval/partner-verification/update/{id}', [ApprovalPartnerController::class, 'update'])->name('partner-verification.update');
     Route::delete('/approval/partner-verification/delete/{id}', [ApprovalPartnerController::class, 'destroy'])->name('partner-verification.delete');
 
-    Route::get('/approval/topup-verification', [ApprovalPaymentController::class, 'index'])->name('admin.ewallet.index');
-    Route::put('/approval/topup-verification/{id}', [ApprovalPaymentController::class, 'verify'])->name('admin.ewallet.verify');
+    Route::get('/approval/topup-verification', [ApprovalPaymentController::class, 'topup'])->name('approval.ewallet.topup');
+    Route::put('/approval/topup-verification/{id}', [ApprovalPaymentController::class, 'verify'])->name('approval.ewallet.verify');
 
 
 

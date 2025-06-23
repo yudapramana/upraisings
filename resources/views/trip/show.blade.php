@@ -182,7 +182,7 @@
                                     <span class="text-dark font-weight-bold">
                                         Plat Nomor
                                     </span>
-                                    <span>{{ $trip->license_plate }}</span>
+                                    <span class="badge badge-dark font-weight-bold">{{ $trip->license_plate }}</span>
                                 </div>
 
                                 <hr />
