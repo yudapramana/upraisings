@@ -33,6 +33,9 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::resource('angkot', AngkotController::class)->except(['show']);
+
 Route::get('phpmyinfo', function () {
     phpinfo(); 
 })->name('phpmyinfo');
@@ -111,6 +114,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::resource('admin/users', UsersController::class);
     Route::resource('admin/vehicle', VehicleController::class);
     Route::resource('admin/submission-list', SubmissionListController::class);
+
 });
 
 

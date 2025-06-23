@@ -8,7 +8,7 @@
 
                 <div class="row justify-content-center">
                     <!-- Info Saldo -->
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                         <h5 class="text-center mb-3">📄 Riwayat Transaksi</h5>
 
                         <!-- Notifikasi -->

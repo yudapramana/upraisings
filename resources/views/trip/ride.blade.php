@@ -10,7 +10,7 @@
         <section class="spacer bg-light">
             <div class="container pt-4">
                 <div class="row justify-content-center">
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                         <div class="card shadow-sm border-0">
                             <div class="card-body p-4">
                                 <h5 class="text-center mb-3">Mulai Naik Angkot</h5>

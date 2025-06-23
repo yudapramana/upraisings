@@ -84,7 +84,7 @@
             <div class="container pt-4">
                 <div class="row justify-content-center">
                     <!-- Info Saldo Mitra -->
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                         <div class="card shadow-sm">
                             <div class="card-body text-center">
                                 <h5 class="card-title">Saldo Angkot</h5>
@@ -101,7 +101,7 @@
                 <div class="row justify-content-center">
 
                     <!-- Ringkasan Pendapatan -->
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title">Ringkasan Pendapatan</h5>
@@ -135,7 +135,7 @@
 
                 <!-- Riwayat Aktivitas Terbaru -->
                 <div class="row justify-content-center">
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title">Riwayat Aktivitas Terbaru</h5>
@@ -160,8 +160,12 @@
                                                     $locationParts = explode(',', $trip->getoff_location);
                                                     $firstTwo = array_slice($locationParts, 0, 3);
                                                     $formattedLocation = implode(',', $firstTwo);
+                                                    $firstTwoxs = array_slice($locationParts, 0, 2);
+                                                    $formattedLocationxs = implode(',', $firstTwoxs);
                                                 @endphp
-                                                <strong class="text-dark d-block">{{ $formattedLocation ?? '-' }}</strong>
+                                                <strong class="text-dark d-block d-sm-none">{{ $formattedLocationxs ?? '-' }}</strong>
+                                                <strong class="text-dark d-none d-xs-none d-sm-block d-md-none d-lg-none">{{ $formattedLocation ?? '-' }}</strong>
+                                                <strong class="text-dark d-none d-xs-none d-sm-none d-md-block d-lg-block">{{ $trip->getoff_location ?? '-' }}</strong>
 
                                                 @if ($trip->status == 'completed')
                                                     <div class="pt-4">

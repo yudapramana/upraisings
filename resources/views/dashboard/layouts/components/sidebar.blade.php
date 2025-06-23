@@ -34,6 +34,16 @@
             </li> --}}
             <li class="nav-item">
                 @if (Auth::user()->role == 'admin')
+                    <a href={{ url('/admin/angkot') }} class="nav-link @if (Request::segment(2) == 'angkot') active @endif ">
+                    @else
+                        <a href={{ url('/admin/angkot') }} class="nav-link @if (Request::segment(2) == 'angkot') active @endif">
+                @endif
+                <i class="fas fa-table nav-icon"></i>
+                <p>Kelola Angkot</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                @if (Auth::user()->role == 'admin')
                     <a href={{ url('/admin/partner-verification') }} class="nav-link @if (Request::segment(2) == 'partner-verification') active @endif ">
                     @else
                         <a href={{ url('/approval/partner-verification') }} class="nav-link @if (Request::segment(2) == 'partner-verification') active @endif">

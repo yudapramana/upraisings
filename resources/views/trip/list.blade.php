@@ -62,7 +62,7 @@
         <section class="spacer bg-light">
             <div class="container pt-4">
                 <div class="row justify-content-center">
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title">Riwayat Aktivitas Terbaru</h5>
