@@ -44,6 +44,7 @@ class PartnerController extends Controller
                             ->sum('amount');
 
         $trips = \App\Models\Trip::where('partner_id', Auth::user()->id)
+                ->with('user')
                 ->latest()
                 ->take(5)
                 ->get();

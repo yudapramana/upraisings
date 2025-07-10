@@ -124,6 +124,7 @@ class RegisterController extends Controller {
                 'user_id' => $partner->id,
                 'angkot_type_id' => $request->angkot_type_id,
                 'license_plate' => strtoupper($request->license_plate),
+                'vehicle_photo' => $request->vehicle_photo,
             ]);
 
             DB::commit();

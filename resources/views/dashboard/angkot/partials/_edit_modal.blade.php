@@ -1,13 +1,14 @@
 <!-- Modal Edit -->
-<div class="modal fade" id="modal-edit-{{ $row->id }}">
+<div class="modal fade" id="modal-edit">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Edit Data Angkot - {{ $row->nama_lengkap }}</h4>
             </div>
-            <form method="POST" action="{{ route('angkot.update', $row->id) }}" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <form id="form-edit-angkot" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
+                <input type="hidden" name="id" id="edit-id" value="{{ $row->id }}">
                 <div class="modal-body">
 
                     {{-- Data Pengemudi --}}

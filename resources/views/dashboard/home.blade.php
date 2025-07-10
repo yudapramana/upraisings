@@ -45,8 +45,7 @@
                 </div>
                 <div class="card-body">
                     <div class="chart">
-                        <canvas id="barChart"
-                            style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                     </div>
                 </div>
             </div>
@@ -60,20 +59,26 @@
     <script>
         $(function() {
             var areaChartData = {
-                labels  : [@foreach ($charts as $chart) '{{ $chart->Month }}', @endforeach ],
-                datasets: [
-                    {
-                        label               : 'Total Pengajuan',
-                        backgroundColor     : 'rgba(60,141,188,0.9)',
-                        borderColor         : 'rgba(60,141,188,0.8)',
-                        pointRadius          : false,
-                        pointColor          : '#3b8bba',
-                        pointStrokeColor    : 'rgba(60,141,188,1)',
-                        pointHighlightFill  : '#fff',
-                        pointHighlightStroke: 'rgba(60,141,188,1)',
-                        data: [@foreach ($charts as $chart) '{{ $chart->count}}', @endforeach ],
-                    },
-                ]
+                labels: [
+                    @foreach ($charts as $chart)
+                        '{{ $chart->Month }}',
+                    @endforeach
+                ],
+                datasets: [{
+                    label: 'Total Pengajuan',
+                    backgroundColor: 'rgba(60,141,188,0.9)',
+                    borderColor: 'rgba(60,141,188,0.8)',
+                    pointRadius: false,
+                    pointColor: '#3b8bba',
+                    pointStrokeColor: 'rgba(60,141,188,1)',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(60,141,188,1)',
+                    data: [
+                        @foreach ($charts as $chart)
+                            '{{ $chart->count }}',
+                        @endforeach
+                    ],
+                }, ]
             }
 
             //-------------

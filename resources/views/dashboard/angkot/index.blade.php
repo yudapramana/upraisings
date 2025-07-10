@@ -31,19 +31,19 @@
                 <div class="modal-header">
                     <h4 class="modal-title">Formulir Pendaftaran Angkot</h4>
                 </div>
-                <form method="POST" action="{{ route('angkot.store') }}" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <form id="form-create-angkot" enctype="multipart/form-data" class="needs-validation" novalidate>
                     @csrf
                     <div class="modal-body">
                         {{-- Tampilkan error --}}
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $err)
-                                        <li>{{ $err }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+                        {{-- @if ($errors->any()) --}}
+                        <div class="alert alert-danger" style="display: none">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $err)
+                                    <li>{{ $err }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        {{-- @endif --}}
 
                         {{-- Data Pengemudi --}}
                         <div class="form-group"><label>Nama Lengkap</label><input name="nama_lengkap" type="text" class="form-control" required value="{{ old('nama_lengkap') }}"></div>
@@ -109,14 +109,15 @@
                         </div>
                         <div class="form-group"><label>Plat Nomor Kendaraan</label><input name="license_plate" class="form-control" required value="{{ old('license_plate') }}"></div>
                         <div class="form-group">
-                            <label>Foto Angkot</label><br>
-                            <button type="button" id="upload_widget" class="btn btn-outline-primary">Upload Foto</button>
-                            <input type="hidden" name="vehicle_photo" id="vehicle_photo" value="{{ old('vehicle_photo') }}">
+                            <label for="vehicle_photo">Foto Angkot</label><br>
+                            <button type="button" id="upload_widget" class="btn btn-outline-primary">Upload Foto Angkot</button>
+                            <input type="hidden" id="vehicle_photo" name="vehicle_photo" value="{{ old('vehicle_photo') }}">
                             <div id="preview_image" class="mt-2">
                                 @if (old('vehicle_photo'))
-                                    <img src="{{ old('vehicle_photo') }}" style="max-height:150px;" class="img-fluid rounded">
+                                    <img src="{{ old('vehicle_photo') }}" class="img-fluid mt-2 rounded border" style="max-height: 150px;">
                                 @endif
                             </div>
+                            <small class="text-muted text-sm">Unggah foto bagian depan angkot dengan jelas</small>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
@@ -205,6 +206,8 @@
 @endsection
 
 @push('js')
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+
     <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
@@ -214,6 +217,144 @@
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#form-create-angkot').on('submit', function(e) {
+                e.preventDefault();
+
+                let form = $(this)[0];
+                let formData = new FormData(form);
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('input[name="_token"]').val()
+                    }
+                });
+
+                $.ajax({
+                    url: "{{ route('angkot.store') }}",
+                    method: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function() {
+                        $('.alert-danger').hide().html('');
+                        Swal.fire({
+                            title: 'Mohon tunggu...',
+                            text: 'Sedang mengirim data',
+                            didOpen: () => Swal.showLoading(),
+                            allowOutsideClick: false,
+                            showConfirmButton: false
+                        });
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pendaftaran berhasil!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+
+                        $('#modal-create').modal('hide');
+                        $('#form-create-angkot')[0].reset();
+                        $('#preview_image').html('');
+
+                        if ($('#datatable').length) {
+                            $('#datatable').DataTable().ajax.reload();
+                        }
+                    },
+                    error: function(xhr) {
+                        Swal.close();
+                        let response = xhr.responseJSON;
+                        let errors = response.errors;
+
+                        let errorList = '<ul>';
+                        $.each(errors, function(key, value) {
+                            console.log(value[0]);
+                            errorList += '<li>' + value[0] + '</li>';
+                        });
+                        errorList += '</ul>';
+
+                        $('.alert-danger').html(errorList).show();
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal mengirim!',
+                            text: 'Silakan periksa isian form Anda.'
+                        });
+                    }
+                });
+            });
+
+            $('#form-edit-angkot').on('submit', function(e) {
+                e.preventDefault();
+
+                let id = $('#edit-id').val();
+                let form = $(this)[0];
+                let formData = new FormData(form);
+                formData.append('_method', 'PUT');
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('input[name="_token"]').val()
+                    }
+                });
+
+                $.ajax({
+                    url: '/angkot/' + id, // pastikan sesuai route resource angkot.update
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $('.alert-danger').hide().html('');
+                        Swal.fire({
+                            title: 'Menyimpan...',
+                            didOpen: () => Swal.showLoading(),
+                            allowOutsideClick: false,
+                            showConfirmButton: false
+                        });
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Data berhasil diperbarui!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+
+                        $('#modal-edit').modal('hide');
+                        $('#form-edit-angkot')[0].reset();
+
+                        if ($('#datatable').length) {
+                            $('#datatable').DataTable().ajax.reload();
+                        }
+                    },
+                    error: function(xhr) {
+                        Swal.close();
+                        let response = xhr.responseJSON;
+                        let errors = response.errors;
+
+                        let errorList = '<ul>';
+                        $.each(errors, function(key, value) {
+                            errorList += '<li>' + value[0] + '</li>';
+                        });
+                        errorList += '</ul>';
+
+                        $('.alert-danger').html(errorList).show();
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal menyimpan!',
+                            text: 'Silakan periksa kembali form.'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
     <script>
         // DataTable & form validation
         $('#datatable').DataTable({
@@ -295,5 +436,26 @@
                 }
             })
         });
+
+        var myWidget = cloudinary.createUploadWidget({
+            cloudName: 'dmynbnqtt', // Ganti dengan cloud name kamu
+            uploadPreset: 'angkotapp', // Ganti dengan upload preset kamu
+            multiple: false,
+            cropping: false,
+            maxFileSize: 2000000,
+            clientAllowedFormats: ["jpg", "jpeg", "png"],
+            maxImageWidth: 1600
+        }, (error, result) => {
+            if (!error && result && result.event === "success") {
+                console.log("Foto berhasil diupload: ", result.info);
+                document.getElementById("vehicle_photo").value = result.info.secure_url;
+                document.getElementById("preview_image").innerHTML =
+                    `<img src="${result.info.secure_url}" class="img-fluid mt-2 rounded border" style="max-height: 150px;">`;
+            }
+        });
+
+        document.getElementById("upload_widget").addEventListener("click", function() {
+            myWidget.open();
+        }, false);
     </script>
 @endpush
