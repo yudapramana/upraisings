@@ -175,7 +175,7 @@
 
                                             <div class="section1" style="display: inline-grid; text-align: center;">
                                                 <div class="fw-bold mb-1">Rp{{ number_format($trip->trip_fare, 2, ',', '.') }}</div>
-                                                <a href="{{ route('trip.show.partner', $trip->id) }}" class="badge badge-success text-white px-2 py-1 mt-5">
+                                                <a href="{{ route('trip.show.customer', $trip->id) }}" class="badge badge-success text-white px-2 py-1 mt-5">
                                                     Detail
                                                 </a>
 
