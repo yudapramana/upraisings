@@ -183,7 +183,7 @@
 
                                                     <img src="http://res.cloudinary.com/dezj1x6xp/image/upload/v1750247146/PandanViewMandeh/panelarah_angkotapp_k37dlt.jpg" alt="Foto Kendaraan" class="img-circle elevation-2 me-4" width="15" style="object-fit: cover;">
 
-                                                    <div class="ps-1 px-3" style="line-height: 1">
+                                                    <div class="ps-1 px-1" style="line-height: 1">
                                                         <small class="text-dark">Naik dari</small><br>
                                                         @php
                                                             $locationParts = explode(',', $trip->geton_location);

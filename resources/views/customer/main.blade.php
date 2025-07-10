@@ -107,9 +107,7 @@
                                                         <i class="fas fa-shuttle-van me-1" style="font-size: 0.7rem;"></i>
                                                         {{ $trip->route_number }}
                                                     </span>
-                                                    <span style="font-size: 0.7rem;">
-                                                        {{ $trip->distance ?? 'n/a' }} km
-                                                    </span>
+                                                    <span class="badge badge-dark font-weight-bold" style="font-size: 0.6rem;">{{ $trip->license_plate }}</span>
                                                     {{-- <strong class="text-dark" style="font-size: 0.7rem;">{{ $trip->user->name }} </strong> --}}
                                                 </div>
                                                 @php
@@ -135,7 +133,7 @@
 
                                                     <img src="http://res.cloudinary.com/dezj1x6xp/image/upload/v1750247146/PandanViewMandeh/panelarah_angkotapp_k37dlt.jpg" alt="Foto Kendaraan" class="img-circle elevation-2 me-4" width="15" style="object-fit: cover;">
 
-                                                    <div class="ps-1 px-3" style="line-height: 1">
+                                                    <div class="ps-1 px-1" style="line-height: 1">
                                                         <small class="text-dark">Naik dari</small><br>
                                                         @php
                                                             $locationParts = explode(',', $trip->geton_location);
