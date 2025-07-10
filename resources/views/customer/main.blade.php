@@ -107,21 +107,63 @@
                                                         <i class="fas fa-shuttle-van me-1" style="font-size: 0.7rem;"></i>
                                                         {{ $trip->route_number }}
                                                     </span>
+                                                    <span style="font-size: 0.7rem;">
+                                                        {{ $trip->distance ?? 'n/a' }} km
+                                                    </span>
+                                                    {{-- <strong class="text-dark" style="font-size: 0.7rem;">{{ $trip->user->name }} </strong> --}}
                                                 </div>
                                                 @php
-                                                    $locationParts = explode(',', $trip->getoff_location);
-                                                    $firstTwo = array_slice($locationParts, 0, 3);
-                                                    $formattedLocation = implode(',', $firstTwo);
-                                                    $firstTwoxs = array_slice($locationParts, 0, 2);
-                                                    $formattedLocationxs = implode(',', $firstTwoxs);
+                                                    $locgetonparts = explode(',', $trip->geton_location);
+                                                    $sliceon = array_slice($locgetonparts, 0, 2);
+                                                    $getonAddress = implode(',', $sliceon);
+
+                                                    $locgetoffparts = explode(',', $trip->getoff_location);
+                                                    $sliceoff = array_slice($locgetoffparts, 0, 2);
+                                                    $getoffAddress = implode(',', $sliceoff);
                                                 @endphp
-                                                <strong class="text-dark d-block d-sm-none">{{ $formattedLocationxs ?? '-' }}</strong>
-                                                <strong class="text-dark d-none d-xs-none d-sm-block d-md-none d-lg-none">{{ $formattedLocation ?? '-' }}</strong>
-                                                <strong class="text-dark d-none d-xs-none d-sm-none d-md-block d-lg-block">{{ $trip->getoff_location ?? '-' }}</strong>
+                                                {{-- <strong class="text-dark d-block d-sm-none">{{ $getonAddress ?? '-' }}</strong> --}}
+                                                {{-- <strong class="text-dark d-none d-xs-none d-sm-block d-md-none d-lg-none">{{ $formattedLocation ?? '-' }}</strong> --}}
+                                                {{-- <strong class="text-dark d-none d-xs-none d-sm-none d-md-block d-lg-block">{{ $trip->getoff_location ?? '-' }}</strong> --}}
+                                                {{-- <strong class="text-dark">{{ $trip->user->name }} </strong><br>
+                                                naik di <br>
+                                                <strong class="text-dark">{{ $getonAddress ?? 'n/a' }}</strong> <br>
+                                                turun di <br>
+                                                <strong class="text-dark"> {{ $getoffAddress ?? 'n/a' }} </strong>
+                                                <br> --}}
+
+                                                <div class="d-flex align-items-center" style="font-size: 0.7rem;">
+
+                                                    <img src="http://res.cloudinary.com/dezj1x6xp/image/upload/v1750247146/PandanViewMandeh/panelarah_angkotapp_k37dlt.jpg" alt="Foto Kendaraan" class="img-circle elevation-2 me-4" width="15" style="object-fit: cover;">
+
+                                                    <div class="ps-1 px-3" style="line-height: 1">
+                                                        <small class="text-dark">Naik dari</small><br>
+                                                        @php
+                                                            $locationParts = explode(',', $trip->geton_location);
+                                                            $firstTwo = array_slice($locationParts, 0, 2);
+                                                            $formattedLocation = implode(',', $firstTwo);
+                                                        @endphp
+                                                        <strong class="text-dark">{{ $formattedLocation ?? '-' }}</strong>
+
+                                                        <div class="ms-2 mb-1" style="height: 11px; border-left: 2px #ccc;"></div>
+
+                                                        <small class="text-dark">Turun di - {{ $trip->distance ?? 'n/a' }} km</small><br>
+                                                        @php
+                                                            if ($trip->getoff_location) {
+                                                                $locationParts2 = explode(',', $trip->getoff_location);
+                                                                $firstTwo2 = array_slice($locationParts2, 0, 2);
+                                                                $formattedLocation2 = implode(',', $firstTwo2);
+                                                            } else {
+                                                                $formattedLocation2 = 'On Going';
+                                                            }
+                                                        @endphp
+                                                        <strong class="text-dark">{{ $formattedLocation2 }}</strong>
+                                                    </div>
+                                                </div>
+
+
 
                                                 @if ($trip->status == 'completed')
-                                                    <div class="pt-4">
-
+                                                    <div class="pt-2" style="font-size: 0.7rem">
                                                         <i class="fas fa-check-circle text-success me-1"></i> Trip Completed
                                                     </div>
                                                 @else
@@ -133,7 +175,7 @@
 
                                             <div class="section1" style="display: inline-grid; text-align: center;">
                                                 <div class="fw-bold mb-1">Rp{{ number_format($trip->trip_fare, 2, ',', '.') }}</div>
-                                                <a href="{{ route('trip.show.customer', $trip->id) }}" class="badge badge-success text-white px-2 py-1 mt-5">
+                                                <a href="{{ route('trip.show.partner', $trip->id) }}" class="badge badge-success text-white px-2 py-1 mt-5">
                                                     Detail
                                                 </a>
 
