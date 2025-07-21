@@ -67,8 +67,17 @@
                             <button type="button" class="btn btn-outline-success btn-sm mb-2" onclick="fillDemo('partner4')">Angkot_4</button>
                             <button type="button" class="btn btn-outline-success btn-sm mb-2" onclick="fillDemo('partner5')">Angkot_5</button>
                             <button type="button" class="btn btn-outline-warning btn-sm mb-2" onclick="fillDemo('approval')">Admin</button>
+                            <button type="button" class="btn btn-outline-dark btn-sm mb-2" onclick="fillDemo('director')">Director</button>
+
                         </div>
                     </div>
+
+                    <div class="mt-4 text-center">
+                        <a href="{{ url('/') }}" class="btn btn-secondary btn-sm">
+                            ← Kembali ke Halaman Utama
+                        </a>
+                    </div>
+
                 </form>
             </div>
         </div>
@@ -86,7 +95,8 @@
             partner3: 'dedi.surya@gmail.com',
             partner4: 'siti.nurjanah@gmail.com',
             partner5: 'taufik.hidayat@example.com',
-            approval: 'admin@admin.com'
+            approval: 'admin@admin.com',
+            director: 'director@angkot.com' // ✅ Tambahan
         };
 
         const passwords = {
@@ -97,7 +107,8 @@
             partner3: 'dedisurya',
             partner4: 'nurjanah2024',
             partner5: 'taufik123',
-            approval: 'admin'
+            approval: 'admin',
+            director: 'director' // ✅ Tambahan
         };
 
         document.getElementById('email').value = emails[role];

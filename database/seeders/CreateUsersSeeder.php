@@ -37,22 +37,6 @@ class CreateUsersSeeder extends Seeder
                 'updated_at'    => date('Y-m-d H:i:s'),
             ],
             [
-                'name'          => 'Loe Marksman',
-                'email'         => 'partner@partner.com',
-                'role'          => 'partner',
-                'password'      => Hash::make('partner'),
-                'created_at'    => date('Y-m-d H:i:s'),
-                'updated_at'    => date('Y-m-d H:i:s'),
-            ],
-            [
-                'name'          => 'Qreshna Murni Akisan',
-                'email'         => 'partner2@partner.com',
-                'role'          => 'partner',
-                'password'      => Hash::make('partner'),
-                'created_at'    => date('Y-m-d H:i:s'),
-                'updated_at'    => date('Y-m-d H:i:s'),
-            ],
-            [
                 'name'          => 'Toufik Ghozali',
                 'email'         => 'tghoz@gmail.com',
                 'role'          => 'customer',
@@ -145,6 +129,22 @@ class CreateUsersSeeder extends Seeder
         ]);
 
         
+
+        $users = [
+            [
+                'name'          => 'director',
+                'email'         => 'director@angkot.com',
+                'role'          => 'director',
+                'password'      => Hash::make('director'),
+                'created_at'    => date('Y-m-d H:i:s'),
+                'updated_at'    => date('Y-m-d H:i:s'),
+            ],
+        ];
+
+
+        foreach ($users as $key => $user) {
+            $user = User::create($user);
+        }
 
     }
 }

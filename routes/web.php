@@ -126,8 +126,22 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::put('/admin/wallet/withdraw/verification/{id}', [ApprovalPaymentController::class, 'verifyWithdraw'])->name('admin.ewallet.withdraw.verify');
 
     Route::get('/admin/transactions', [TransactionController::class, 'index'])->name('admin.transactions.index');
+});
 
 
+/*--------------------------------------------------------------------------------------
+All Director Routes List
+----------------------------------------------------------------------------------------*/
+Route::middleware(['auth', 'user-access:director'])->group(function () {
+    Route::get('admin', [DashboardController::class, 'index'])->name('director.home');
+    Route::get('admin/history', [HistoryListController::class, 'index']);
+
+    Route::resource('admin/users', UsersController::class);
+    Route::resource('admin/vehicle', VehicleController::class);
+    Route::resource('admin/submission-list', SubmissionListController::class);
+    Route::resource('admin/angkot', AngkotController::class)->except(['show']);
+
+    Route::get('/admin/transactions', [TransactionController::class, 'index'])->name('admin.transactions.index');
 });
 
 

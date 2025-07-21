@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('city_register')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->enum('role', ['admin', 'approval', 'partner', 'customer'])->default('customer');
+            $table->enum('role', ['admin', 'approval', 'partner', 'customer', 'director'])->default('customer');
             $table->string('password');
             // Informasi rekening untuk withdraw
             $table->string('bank_name')->nullable(); // Nama bank (BCA, Mandiri, dll.)

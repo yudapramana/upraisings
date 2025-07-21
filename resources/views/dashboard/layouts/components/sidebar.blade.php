@@ -14,37 +14,35 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-header">DASHBOARD</li>
             <li class="nav-item">
-                @if (Auth::user()->role == 'admin')
-                    <a href="{{ url('/admin') }}" class="nav-link @if (Request::segment(2) == '') active @endif">
-                    @else
-                        <a href="{{ url('/approval') }}" class="nav-link @if (Request::segment(2) == '') active @endif">
-                @endif
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>Dashboard</p>
+                <a href="{{ url('/admin') }}" class="nav-link @if (Request::segment(2) == '') active @endif">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>Dashboard</p>
                 </a>
             </li>
 
-            <li class="nav-header">VERIFICATION</li>
-            <li class="nav-item">
-                <a href="{{ url('/admin/angkot/verification') }}" class="nav-link @if (Request::segment(2) == 'angkot' && Request::segment(3) == 'verification') active @endif">
-                    <i class="nav-icon fas fa-clipboard-check"></i>
-                    <p>Pendaftaran Angkot</p>
-                </a>
-            </li>
+            @if (Auth::user()->role == 'admin')
+                <li class="nav-header">VERIFICATION</li>
+                <li class="nav-item">
+                    <a href="{{ url('/admin/angkot/verification') }}" class="nav-link @if (Request::segment(2) == 'angkot' && Request::segment(3) == 'verification') active @endif">
+                        <i class="nav-icon fas fa-clipboard-check"></i>
+                        <p>Pendaftaran Angkot</p>
+                    </a>
+                </li>
 
-            <li class="nav-item">
-                <a href="{{ url('/admin/wallet/topup/verification') }}" class="nav-link @if (Request::segment(3) == 'topup' && Request::segment(4) == 'verification') active @endif">
-                    <i class="nav-icon fas fa-wallet"></i>
-                    <p>Tambah Dana</p>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a href="{{ url('/admin/wallet/topup/verification') }}" class="nav-link @if (Request::segment(3) == 'topup' && Request::segment(4) == 'verification') active @endif">
+                        <i class="nav-icon fas fa-wallet"></i>
+                        <p>Tambah Dana</p>
+                    </a>
+                </li>
 
-            <li class="nav-item">
-                <a href="{{ url('/admin/wallet/withdraw/verification') }}" class="nav-link @if (Request::segment(3) == 'withdraw' && Request::segment(4) == 'verification') active @endif">
-                    <i class="nav-icon fas fa-money-bill-wave"></i>
-                    <p>Tarik Dana</p>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a href="{{ url('/admin/wallet/withdraw/verification') }}" class="nav-link @if (Request::segment(3) == 'withdraw' && Request::segment(4) == 'verification') active @endif">
+                        <i class="nav-icon fas fa-money-bill-wave"></i>
+                        <p>Tarik Dana</p>
+                    </a>
+                </li>
+            @endif
 
             <li class="nav-header">MONITORING</li>
 
