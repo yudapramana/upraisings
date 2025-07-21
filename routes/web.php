@@ -133,7 +133,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 All Director Routes List
 ----------------------------------------------------------------------------------------*/
 Route::middleware(['auth', 'user-access:director'])->group(function () {
-    Route::get('admin', [DashboardController::class, 'index'])->name('director.home');
+    Route::get('admin', [DashboardController::class, 'indexDirector'])->name('director.home');
     Route::get('admin/history', [HistoryListController::class, 'index']);
 
     Route::resource('admin/users', UsersController::class);
