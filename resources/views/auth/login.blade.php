@@ -56,7 +56,7 @@
                         @endif
                     </p> --}}
 
-                    <div class="mt-3">
+                    {{-- <div class="mt-3">
                         <label class="d-block mb-2">Login Demo:</label>
                         <div class="d-flex justify-content-between flex-wrap gap-2">
                             <button type="button" class="btn btn-outline-info btn-sm mb-2" onclick="fillDemo('customer1')">User_1</button>
@@ -70,7 +70,7 @@
                             <button type="button" class="btn btn-outline-dark btn-sm mb-2" onclick="fillDemo('director')">Director</button>
 
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="mt-4 text-center">
                         <a href="{{ url('/') }}" class="btn btn-secondary btn-sm">
