@@ -12,28 +12,66 @@
 
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-header">DASHBOARD</li>
             <li class="nav-item">
                 @if (Auth::user()->role == 'admin')
-                    <a href={{ url('/admin') }} class="nav-link @if (Request::segment(2) == '') active @endif">
+                    <a href="{{ url('/admin') }}" class="nav-link @if (Request::segment(2) == '') active @endif">
                     @else
-                        <a href={{ url('/approval') }} class="nav-link @if (Request::segment(2) == '') active @endif">
+                        <a href="{{ url('/approval') }}" class="nav-link @if (Request::segment(2) == '') active @endif">
                 @endif
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>Dashboard</p>
                 </a>
             </li>
-            {{-- <li class="nav-item">
-                @if (Auth::user()->role == 'admin')
-                    <a href={{ url('/admin/submission-list') }} class="nav-link">
-                @else
-                    <a href={{ url('/approval/submission-list-approval') }} class="nav-link">
-                @endif
-                    <i class="fas fa-table nav-icon"></i>
-                    <p>Tabel Pengajuan</p>
-                </a>
-            </li> --}}
 
-            <li class="nav-item @if (Request::segment(2) == 'angkot') menu-open @endif">
+            <li class="nav-header">VERIFICATION</li>
+            <li class="nav-item">
+                <a href="{{ url('/admin/angkot/verification') }}" class="nav-link @if (Request::segment(2) == 'angkot' && Request::segment(3) == 'verification') active @endif">
+                    <i class="nav-icon fas fa-clipboard-check"></i>
+                    <p>Pendaftaran Angkot</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ url('/admin/wallet/topup/verification') }}" class="nav-link @if (Request::segment(3) == 'topup' && Request::segment(4) == 'verification') active @endif">
+                    <i class="nav-icon fas fa-wallet"></i>
+                    <p>Tambah Dana</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ url('/admin/wallet/withdraw/verification') }}" class="nav-link @if (Request::segment(3) == 'withdraw' && Request::segment(4) == 'verification') active @endif">
+                    <i class="nav-icon fas fa-money-bill-wave"></i>
+                    <p>Tarik Dana</p>
+                </a>
+            </li>
+
+            <li class="nav-header">MONITORING</li>
+
+            <li class="nav-item">
+                <a href="{{ url('/admin/angkot/') }}" class="nav-link @if (Request::segment(2) == 'angkot' && Request::segment(3) == '') active @endif">
+                    <i class="nav-icon fas fa-bus"></i>
+                    <p>Daftar Angkot</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ url('/admin/users') }}" class="nav-link">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>Pengguna</p>
+                </a>
+            </li>
+
+            <li class="nav-header">REPORTS</li>
+            <li class="nav-item">
+                <a href="{{ url('/admin/transactions') }}" class="nav-link">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>Transaksi</p>
+                </a>
+            </li>
+
+
+            {{-- <li class="nav-item @if (Request::segment(2) == 'angkot') menu-open @endif">
                 <a href="#" class="nav-link @if (Request::segment(2) == 'angkot') active @endif">
                     <i class="nav-icon fas fa-bus"></i>
                     <p>
@@ -55,9 +93,9 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
 
-            <li class="nav-item @if (Request::segment(2) == 'wallet') menu-open @endif">
+            {{-- <li class="nav-item @if (Request::segment(2) == 'wallet') menu-open @endif">
                 <a href="#" class="nav-link @if (Request::segment(2) == 'wallet') active @endif">
                     <i class="nav-icon fas fa-bus"></i>
                     <p>
@@ -81,7 +119,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
 
 
             {{-- <li class="nav-item">
@@ -122,12 +160,12 @@
                         <p>List Kendaraan</p>
                     </a>
                 </li> --}}
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href={{ url('/admin/users') }} class="nav-link">
                         <i class="fas fa-user nav-icon"></i>
                         <p>Pengguna</p>
                     </a>
-                </li>
+                </li> --}}
             @else
             @endif
             {{-- <li class="nav-item">

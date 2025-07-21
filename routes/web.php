@@ -17,6 +17,7 @@ use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RideController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\WalletController;
 use App\Models\Trip;
@@ -123,6 +124,10 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 
     Route::get('/admin/wallet/withdraw/verification', [ApprovalPaymentController::class, 'withdraw'])->name('admin.ewallet.withdraw');
     Route::put('/admin/wallet/withdraw/verification/{id}', [ApprovalPaymentController::class, 'verifyWithdraw'])->name('admin.ewallet.withdraw.verify');
+
+    Route::get('/admin/transactions', [TransactionController::class, 'index'])->name('admin.transactions.index');
+
+
 });
 
 

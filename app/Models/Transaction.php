@@ -13,15 +13,6 @@ class Transaction extends Model
     
     protected $guarded = [];
 
-     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    // protected $fillable = [
-    //     'ewallet_id',
-    // ];
-
     // Relasi ke Bank
     public function bank()
     {
@@ -32,5 +23,10 @@ class Transaction extends Model
     public function ewallet()
     {
         return $this->belongsTo(EWallet::class, 'ewallet_id');
+    }
+
+    public function trip()
+    {
+        return $this->belongsTo(Trip::class, 'trip_id');
     }
 }
