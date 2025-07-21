@@ -6,66 +6,64 @@
 @endpush
 
 @section('content')
-    <div class="container-fluid">
-        <h4 class="mb-4">{{ $titlePages }}</h4>
+    {{-- <h4 class="mb-4">{{ $titlePages }}</h4> --}}
 
-        <!-- Ringkasan -->
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <div class="small-box bg-success">
-                    <div class="inner">
-                        <h4 id="totalFare">Rp 0</h4>
-                        <p>Total Pendapatan</p>
-                    </div>
-                    <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
+    <!-- Ringkasan -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h4 id="totalFare">Rp 0</h4>
+                    <p>Total Pendapatan</p>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="small-box bg-info">
-                    <div class="inner">
-                        <h4 id="totalTrip">0</h4>
-                        <p>Total Trip Selesai</p>
-                    </div>
-                    <div class="icon"><i class="fas fa-route"></i></div>
-                </div>
+                <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
             </div>
         </div>
-
-        <!-- Tabel -->
-        <div class="card">
-            <div class="card-body">
-
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label for="filterMonthYear">Filter Bulan & Tahun</label>
-                        <select id="filterMonthYear" class="form-control">
-                            @for ($i = 0; $i < 6; $i++)
-                                @php
-                                    $date = now()->subMonths($i);
-                                @endphp
-                                <option value="{{ $date->format('Y-m') }}">{{ $date->translatedFormat('F Y') }}</option>
-                            @endfor
-                        </select>
-                    </div>
+        <div class="col-md-4">
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h4 id="totalTrip">0</h4>
+                    <p>Total Trip Selesai</p>
                 </div>
-
-
-                <table class="table table-bordered table-hover table-striped table-sm" id="tripTable">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Tanggal</th>
-                            <th>Nama Penumpang</th>
-                            <th>No. Trayek</th>
-                            <th>No. Polisi</th>
-                            <th>Rute</th>
-                            <th>Jarak (km)</th>
-                            <th>Tarif (Rp)</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <div class="icon"><i class="fas fa-route"></i></div>
             </div>
+        </div>
+    </div>
+
+    <!-- Tabel -->
+    <div class="card">
+        <div class="card-body">
+
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label for="filterMonthYear">Filter Bulan & Tahun</label>
+                    <select id="filterMonthYear" class="form-control">
+                        @for ($i = 0; $i < 6; $i++)
+                            @php
+                                $date = now()->subMonths($i);
+                            @endphp
+                            <option value="{{ $date->format('Y-m') }}">{{ $date->translatedFormat('F Y') }}</option>
+                        @endfor
+                    </select>
+                </div>
+            </div>
+
+
+            <table class="table table-bordered table-hover table-striped table-sm" id="tripTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tanggal</th>
+                        <th>Nama Penumpang</th>
+                        <th>No. Trayek</th>
+                        <th>No. Polisi</th>
+                        <th>Rute</th>
+                        <th>Jarak (km)</th>
+                        <th>Tarif (Rp)</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
 @endsection
