@@ -34,7 +34,23 @@
         <!-- Tabel -->
         <div class="card">
             <div class="card-body">
-                <table class="table table-bordered table-hover table-striped" id="tripTable">
+
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="filterMonthYear">Filter Bulan & Tahun</label>
+                        <select id="filterMonthYear" class="form-control">
+                            @for ($i = 0; $i < 6; $i++)
+                                @php
+                                    $date = now()->subMonths($i);
+                                @endphp
+                                <option value="{{ $date->format('Y-m') }}">{{ $date->translatedFormat('F Y') }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                </div>
+
+
+                <table class="table table-bordered table-hover table-striped table-sm" id="tripTable">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -42,8 +58,7 @@
                             <th>Nama Penumpang</th>
                             <th>No. Trayek</th>
                             <th>No. Polisi</th>
-                            <th>Naik</th>
-                            <th>Turun</th>
+                            <th>Rute</th>
                             <th>Jarak (km)</th>
                             <th>Tarif (Rp)</th>
                         </tr>
@@ -100,6 +115,9 @@
                 ajax: {
                     url: '{{ route('admin.transactions.index') }}',
                     type: 'GET',
+                    data: function(d) {
+                        d.month_year = $('#filterMonthYear').val(); // Kirim ke backend
+                    },
                     dataSrc: function(json) {
                         $('#totalFare').text('Rp ' + parseFloat(json.summary.total_fare).toLocaleString('id-ID'));
                         $('#totalTrip').text(json.summary.total_trip);
@@ -128,14 +146,10 @@
                         name: 'license_plate'
                     },
                     {
-                        data: 'geton_short',
-                        name: 'geton_short',
-                        title: 'Naik Dari'
-                    },
-                    {
-                        data: 'getoff_short',
-                        name: 'getoff_short',
-                        title: 'Turun Di'
+                        data: 'route',
+                        name: 'route',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'distance',
@@ -148,6 +162,11 @@
                         className: 'text-right'
                     }
                 ]
+            });
+
+            // Trigger reload saat bulan-tahun berubah
+            $('#filterMonthYear').on('change', function() {
+                table.ajax.reload();
             });
         });
     </script>
