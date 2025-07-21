@@ -18,7 +18,10 @@
 
                         <div class="mt-4">
                             @auth
-                                <a href="{{ route(auth()->user()->role . '.home') }}" class="btn btn-success btn-lg px-4">Ke-Beranda Aplikasi</a>
+                                @php
+                                    $role = auth()->user()->role === 'director' ? 'admin' : auth()->user()->role;
+                                @endphp
+                                <a href="{{ route($role . '.home') }}" class="btn btn-success btn-lg px-4">Ke-Beranda Aplikasi</a>
                             @else
                                 <a href="{{ route('login') }}" class="btn btn-primary btn-lg px-4">Login Sekarang</a>
                             @endauth

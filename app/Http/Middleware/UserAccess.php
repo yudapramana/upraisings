@@ -8,12 +8,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserAccess
 {
-    public function handle(Request $request, Closure $next, $userType): Response
+    public function handle(Request $request, Closure $next, $role): Response
     {
-        if(auth()->user()->role == $userType){
-            return $next($request);
+
+        $allowedRoles = is_array($role) ? $role : explode('|', $role); // mendukung pipe (admin|director)
+
+        if (!in_array(auth()->user()->role, $allowedRoles)) {
+            return redirect()->route('index');
         }
-        return redirect()->route('index');
+
+        return $next($request);
+
         // return response()->json(['You do not have permission to access for this page.']);
         /* return response()->view('errors.check-permission'); */
     }
