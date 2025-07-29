@@ -81,7 +81,20 @@
 
                         // tampilkan map
                         document.getElementById('mapContainer').style.display = 'block';
-                        const map = L.map('map').setView([lat, lng], 16);
+                        // const map = L.map('map').setView([lat, lng], 16);
+                        const map = L.map('map', {
+                            center: [lat, lng],
+                            zoom: 16,
+
+                            // 🔒 Disable interactivity
+                            dragging: false,
+                            touchZoom: false,
+                            scrollWheelZoom: false,
+                            doubleClickZoom: false,
+                            boxZoom: false,
+                            keyboard: false,
+                            zoomControl: false,
+                        });
                         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                             attribution: '&copy; OpenStreetMap'
                         }).addTo(map);
