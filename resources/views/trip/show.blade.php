@@ -16,19 +16,10 @@
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const map = L.map('tripMap', {
-                    center: [{{ $trip->geton_latitude }}, {{ $trip->geton_longitude }}],
-                    zoom: 13,
-
-                    // 🔒 Disable interactivity
-                    dragging: false,
-                    touchZoom: false,
-                    scrollWheelZoom: false,
-                    doubleClickZoom: false,
-                    boxZoom: false,
-                    keyboard: false,
-                    zoomControl: false,
-                });
+                const map = L.map('tripMap').setView([
+                    {{ $trip->geton_latitude }},
+                    {{ $trip->geton_longitude }}
+                ], 13);
 
                 // OpenStreetMap Tiles
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
