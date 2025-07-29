@@ -25,9 +25,9 @@
                     touchZoom: false,
                     scrollWheelZoom: false,
                     doubleClickZoom: false,
-                    boxZoom: false,
+                    // boxZoom: false,
                     keyboard: false,
-                    zoomControl: false,
+                    // zoomControl: false,
                 });
 
                 // OpenStreetMap Tiles
