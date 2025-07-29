@@ -16,7 +16,7 @@
         <!-- Leaflet Routing Machine CSS & JS -->
         <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
         <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        {{-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> --}}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const map = L.map('tripMap', {
