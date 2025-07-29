@@ -284,7 +284,8 @@
                                     <div class="alert alert-danger p-2 small mb-3" role="alert">
                                         <strong>Perhatian!</strong> Silakan lakukan pembayaran <strong>tunai (cash)</strong> langsung kepada supir angkot.
                                     </div>
-                                @else
+                                @endif
+                                @if ($trip->payment_method === 'system')
                                     <div class="alert alert-success p-2 small mb-3" role="alert">
                                         <strong>Pembayaran Berhasil!</strong> Biaya perjalanan ini telah dibayarkan melalui <strong>sistem (saldo e-wallet)</strong>.
                                     </div>
