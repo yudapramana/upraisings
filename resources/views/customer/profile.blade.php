@@ -68,7 +68,7 @@
 
                                     <div class="form-group mb-3">
                                         <label for="email">Email</label>
-                                        <input type="email" class="form-control" value="{{ old('email', $user->email) }}">
+                                        <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}">
                                     </div>
 
                                     <div class="form-group mb-3">
