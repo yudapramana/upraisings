@@ -13,6 +13,9 @@
 
 @section('scripts')
     @if ($trip->status === 'completed' && $trip->geton_latitude && $trip->getoff_latitude)
+        <!-- Leaflet Routing Machine CSS & JS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+        <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -20,7 +23,7 @@
                     center: [{{ $trip->geton_latitude }}, {{ $trip->geton_longitude }}],
                     zoom: 13,
 
-                    // 🔒 Disable interactivity
+                    // 🔒 Nonaktifkan interaktivitas
                     dragging: false,
                     touchZoom: false,
                     scrollWheelZoom: false,
@@ -30,37 +33,89 @@
                     zoomControl: false,
                 });
 
-                // OpenStreetMap Tiles
+                // Tile layer
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; OpenStreetMap contributors'
                 }).addTo(map);
 
+                const getonLatLng = L.latLng({{ $trip->geton_latitude }}, {{ $trip->geton_longitude }});
+                const getoffLatLng = L.latLng({{ $trip->getoff_latitude }}, {{ $trip->getoff_longitude }});
+
                 // Marker lokasi naik
-                const getonMarker = L.marker([
-                    {{ $trip->geton_latitude }},
-                    {{ $trip->geton_longitude }}
-                ]).addTo(map).bindPopup('📍 Lokasi Naik<br>{{ $trip->geton_location }}');
+                L.marker(getonLatLng).addTo(map)
+                    .bindPopup('📍 Lokasi Naik<br>{{ $trip->geton_location }}');
 
                 // Marker lokasi turun
-                const getoffMarker = L.marker([
-                    {{ $trip->getoff_latitude }},
-                    {{ $trip->getoff_longitude }}
-                ]).addTo(map).bindPopup('🚩 Lokasi Turun<br>{{ $trip->getoff_location }}');
+                L.marker(getoffLatLng).addTo(map)
+                    .bindPopup('🚩 Lokasi Turun<br>{{ $trip->getoff_location }}');
 
-                // Gambar garis antar lokasi
-                const line = L.polyline([
-                    [{{ $trip->geton_latitude }}, {{ $trip->geton_longitude }}],
-                    [{{ $trip->getoff_latitude }}, {{ $trip->getoff_longitude }}]
-                ], {
-                    color: 'blue',
-                    weight: 3,
-                    opacity: 0.7,
-                    dashArray: '4,6'
+                // Routing line sesuai jalan
+                L.Routing.control({
+                    waypoints: [getonLatLng, getoffLatLng],
+                    lineOptions: {
+                        styles: [{
+                            color: 'blue',
+                            weight: 4,
+                            opacity: 0.7
+                        }]
+                    },
+                    createMarker: function() {
+                        return null;
+                    }, // Hilangkan marker bawaan
+                    addWaypoints: false,
+                    draggableWaypoints: false,
+                    routeWhileDragging: false,
+                    fitSelectedRoutes: true,
+                    show: false
                 }).addTo(map);
-
-                // Fokuskan peta pada kedua titik
-                map.fitBounds(line.getBounds());
             });
+
+            // document.addEventListener('DOMContentLoaded', function() {
+            //     const map = L.map('tripMap', {
+            //         center: [{{ $trip->geton_latitude }}, {{ $trip->geton_longitude }}],
+            //         zoom: 13,
+
+            //         // 🔒 Disable interactivity
+            //         dragging: false,
+            //         touchZoom: false,
+            //         scrollWheelZoom: false,
+            //         doubleClickZoom: false,
+            //         boxZoom: false,
+            //         keyboard: false,
+            //         zoomControl: false,
+            //     });
+
+            //     // OpenStreetMap Tiles
+            //     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            //         attribution: '&copy; OpenStreetMap contributors'
+            //     }).addTo(map);
+
+            //     // Marker lokasi naik
+            //     const getonMarker = L.marker([
+            //         {{ $trip->geton_latitude }},
+            //         {{ $trip->geton_longitude }}
+            //     ]).addTo(map).bindPopup('📍 Lokasi Naik<br>{{ $trip->geton_location }}');
+
+            //     // Marker lokasi turun
+            //     const getoffMarker = L.marker([
+            //         {{ $trip->getoff_latitude }},
+            //         {{ $trip->getoff_longitude }}
+            //     ]).addTo(map).bindPopup('🚩 Lokasi Turun<br>{{ $trip->getoff_location }}');
+
+            //     // Gambar garis antar lokasi
+            //     const line = L.polyline([
+            //         [{{ $trip->geton_latitude }}, {{ $trip->geton_longitude }}],
+            //         [{{ $trip->getoff_latitude }}, {{ $trip->getoff_longitude }}]
+            //     ], {
+            //         color: 'blue',
+            //         weight: 3,
+            //         opacity: 0.7,
+            //         dashArray: '4,6'
+            //     }).addTo(map);
+
+            //     // Fokuskan peta pada kedua titik
+            //     map.fitBounds(line.getBounds());
+            // });
         </script>
     @endif
 
