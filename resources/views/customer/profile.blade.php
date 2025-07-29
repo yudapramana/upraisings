@@ -68,12 +68,12 @@
 
                                     <div class="form-group mb-3">
                                         <label for="email">Email</label>
-                                        <input type="email" class="form-control" value="{{ old('email', $user->email) }}" readonly>
+                                        <input type="email" class="form-control" value="{{ old('email', $user->email) }}">
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label for="mobile_phone">Nomor HP</label>
-                                        <input type="text" name="mobile_phone" id="mobile_phone" class="form-control" value="{{ old('mobile_phone', $user->mobile_phone) }}">
+                                        <input type="text" name="mobile_phone" id="mobile_phone" class="form-control" value="{{ old('mobile_phone', $user->mobile_phone) }}" readonly>
                                     </div>
 
                                     <div class="form-group mb-3">
