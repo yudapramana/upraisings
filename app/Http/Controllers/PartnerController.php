@@ -129,7 +129,7 @@ class PartnerController extends Controller
         $wallet = $user->ewallet;
 
         // Gabungkan APP_URL dengan path naik-angkot dan qrcode_string
-        $uniqueData = config('app.url') . '/naik-angkot/' . $wallet->qrcode_string;
+        $uniqueData = config('app.url') . 'naik-angkot/' . $wallet->qrcode_string;
 
         $qrCode = \QrCode::size(250)->generate($uniqueData);
 
