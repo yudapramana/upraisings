@@ -48,7 +48,7 @@
                                     </div>
 
                                     <div class="text-end">
-                                        <button type="submit" class="btn btn-success btn-sm" disabled>🚀 Mulai Perjalanan / Naik Angkot</button>
+                                        <button id="startRideBtn" type="submit" class="btn btn-success btn-sm" disabled>🚀 Mulai Perjalanan / Naik Angkot</button>
                                     </div>
                                 </form>
                             </div>
