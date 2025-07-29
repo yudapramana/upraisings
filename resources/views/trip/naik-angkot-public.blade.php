@@ -48,7 +48,7 @@
                                     </div>
 
                                     <div class="text-end">
-                                        <button type="submit" class="btn btn-success btn-sm">🚀 Mulai Perjalanan</button>
+                                        <button type="submit" class="btn btn-success btn-sm" disabled>🚀 Mulai Perjalanan / Naik Angkot</button>
                                     </div>
                                 </form>
                             </div>
@@ -86,6 +86,9 @@
                             attribution: '&copy; OpenStreetMap'
                         }).addTo(map);
                         L.marker([lat, lng]).addTo(map).bindPopup('Lokasi Anda').openPopup();
+
+                        // Aktifkan tombol submit
+                        document.getElementById('startRideBtn').disabled = false;
 
                         // reverse geocoding
                         try {
