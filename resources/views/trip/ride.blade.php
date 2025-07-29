@@ -136,14 +136,29 @@
                     }
                 },
                 (decodedText) => {
-                    document.getElementById('qrcode_string').value = decodedText;
-                    document.getElementById('scanQR').style.display = 'block';
-                    // Sembunyikan tombol scan setelah berhasil
-                    document.getElementById('scanQR').style.display = 'none';
+                    // document.getElementById('qrcode_string').value = decodedText;
+                    // document.getElementById('scanQR').style.display = 'block';
+                    // // Sembunyikan tombol scan setelah berhasil
+                    // document.getElementById('scanQR').style.display = 'none';
 
-                    stopScanning();
-                    getCurrentLocation();
-                    fetchAngkotData(decodedText); // Tambahkan ini
+                    // stopScanning();
+                    // getCurrentLocation();
+                    // fetchAngkotData(decodedText); // Tambahkan ini
+
+                    // Ambil qrcode_string setelah "/naik-angkot/"
+                    const match = decodedText.match(/\/naik-angkot\/(.+)$/);
+                    const qrcodeString = match ? match[1] : null;
+
+                    if (qrcodeString) {
+                        document.getElementById('qrcode_string').value = qrcodeString;
+                        document.getElementById('scanQR').style.display = 'none'; // sembunyikan tombol scan
+
+                        stopScanning();
+                        getCurrentLocation();
+                        fetchAngkotData(qrcodeString); // Kirim string unik ke fungsi ini
+                    } else {
+                        alert("QR code tidak valid. Pastikan berisi tautan dengan format yang benar.");
+                    }
                 },
                 (errorMessage) => console.warn("QR scan error:", errorMessage)
             ).catch(err => {

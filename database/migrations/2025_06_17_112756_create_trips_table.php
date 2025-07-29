@@ -45,7 +45,7 @@ return new class extends Migration
             $table->unsignedBigInteger('partner_id'); // penumpang (user yang memesan trip)
 
             $table->enum('status', ['ongoing', 'completed', 'cancelled'])->default('ongoing');
-            
+            $table->enum('payment_method', ['system', 'bank_transfer', 'gopay', 'ovo', 'dana', 'cash'])->default('system');
             $table->timestamps();
         });
     }

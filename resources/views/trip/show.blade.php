@@ -280,6 +280,13 @@
 
                                 <hr />
 
+                                {{-- Tambahkan warning jika metode cash --}}
+                                @if ($trip->payment_method === 'cash')
+                                    <div class="alert alert-danger p-2 small mb-3" role="alert">
+                                        <strong>Perhatian!</strong> Silakan lakukan pembayaran <strong>tunai (cash)</strong> langsung kepada supir angkot.
+                                    </div>
+                                @endif
+
 
                                 {{-- <div class="d-flex align-items-center mb-3">
                                     <img src="{{ $trip->vehicle_photo }}" alt="Foto Kendaraan" class="img-circle elevation-2 me-4" width="50" height="50" style="object-fit: cover;">
@@ -321,7 +328,7 @@
                                             <input type="hidden" name="getoff_geolocation" id="getoff_geolocation">
 
                                             <button id="completeTripBtn" class="btn btn-success w-100" type="submit">
-                                                🚶 Selesaikan Perjalanan
+                                                🚶 Turun dari Angkot
                                             </button>
                                         </form>
                                     </div>

@@ -37,16 +37,20 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 // Route::resource('angkot', AngkotController::class)->except(['show']);
 
+Route::get('/naik-angkot/{angkot_id}', [\App\Http\Controllers\PublicTripController::class, 'showForm'])->name('public.ride.form');
+Route::post('/naik-angkot', [\App\Http\Controllers\PublicTripController::class, 'store'])->name('public.ride.store');
+Route::get('/angkot/{id}', [AngkotController::class, 'getAngkot'])->name('public.angkot.get');
+
 Route::get('phpmyinfo', function () {
     phpinfo(); 
 })->name('phpmyinfo');
 
 Route::get('filltriptrxid', function() {
-Trip::whereNull('trip_transaction_id')->get()->each(function ($trip) {
-    $trip->trip_transaction_id = Trip::generateTransactionId();
-    $trip->save();
-});
-return 'done';
+    Trip::whereNull('trip_transaction_id')->get()->each(function ($trip) {
+        $trip->trip_transaction_id = Trip::generateTransactionId();
+        $trip->save();
+    });
+    return 'done';
 });
 
 Auth::routes();
@@ -71,7 +75,6 @@ Route::group(['prefix' => 'partner', 'middleware' => ['auth', 'user-access:partn
     Route::get('/trip-list-partner', [TripController::class, 'indexPartner'])->name('trip.list.partner');
     Route::get('/trip/{id?}', [TripController::class, 'showPartner'])->name('trip.show.partner');
     Route::get('/transaction/list', [WalletController::class, 'transactions'])->name('transaction.list.partner');
-
 
 });
 
@@ -143,8 +146,6 @@ Route::middleware(['auth', 'user-access:approval'])->group(function () {
 
     Route::get('/approval/topup-verification', [ApprovalPaymentController::class, 'topup'])->name('approval.ewallet.topup');
     Route::put('/approval/topup-verification/{id}', [ApprovalPaymentController::class, 'verify'])->name('approval.ewallet.verify');
-
-
 
 });
 

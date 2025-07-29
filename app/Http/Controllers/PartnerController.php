@@ -107,17 +107,31 @@ class PartnerController extends Controller
     }
 
 
+    // public function showQr()
+    // {
+    //     $userAuth = Auth::user();
+    //     $user = User::with('vehicle.angkotType', 'ewallet')->find($userAuth->id);
+    //     $wallet = $user->ewallet;
+
+
+    //     // String unik, misalnya pakai UUID, ID, atau apa pun yang kamu mau
+    //     $uniqueData = $wallet->qrcode_string; // contoh kombinasi
+
+    //     $qrCode = QrCode::size(250)->generate($uniqueData);
+
+    //     return view('partner.qrcode', compact('qrCode', 'user'));
+    // }
+
     public function showQr()
     {
         $userAuth = Auth::user();
         $user = User::with('vehicle.angkotType', 'ewallet')->find($userAuth->id);
         $wallet = $user->ewallet;
 
+        // Gabungkan APP_URL dengan path naik-angkot dan qrcode_string
+        $uniqueData = config('app.url') . '/naik-angkot/' . $wallet->qrcode_string;
 
-        // String unik, misalnya pakai UUID, ID, atau apa pun yang kamu mau
-        $uniqueData = $wallet->qrcode_string; // contoh kombinasi
-
-        $qrCode = QrCode::size(250)->generate($uniqueData);
+        $qrCode = \QrCode::size(250)->generate($uniqueData);
 
         return view('partner.qrcode', compact('qrCode', 'user'));
     }

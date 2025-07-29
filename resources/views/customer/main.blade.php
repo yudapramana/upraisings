@@ -71,14 +71,20 @@
                                 <p>Status: <span class="badge bg-success">Aktif</span></p>
                                 <a href="{{ route('topup') }}" class="btn btn-success btn-sm">Isi Saldo</a>
 
-                                <a href="{{ $balance >= 7000 ? route('ride') : '#' }}" class="btn btn-primary btn-sm {{ $balance < 7000 ? 'disabled' : '' }}" {{ $balance < 7000 ? 'aria-disabled=true' : '' }}>
+                                {{-- <a href="{{ $balance >= 7000 ? route('ride') : '#' }}" class="btn btn-primary btn-sm {{ $balance < 7000 ? 'disabled' : '' }}" {{ $balance < 7000 ? 'aria-disabled=true' : '' }}>
+                                    Naik Angkot
+                                </a> --}}
+                                <a href="{{ route('ride') }}" class="btn btn-primary btn-sm">
                                     Naik Angkot
                                 </a>
                                 <a href="{{ route('transaction.list.customer') }}" class="btn btn-secondary btn-sm">Riwayat Saldo</a>
                                 <a href="{{ route('customer.profile') }}" class="btn btn-info btn-sm">Profil</a> <!-- Tambahan Button -->
 
                                 @if ($balance < 7000)
-                                    <small class="text-danger d-block mt-1">Saldo minimal Rp7.000 untuk naik angkot.</small>
+                                    <small class="text-danger d-block mt-1">
+                                        Saldo Anda tidak mencukupi maksimum fare (7000). Pembayaran akan dilakukan secara <strong>tunai (cash)</strong> kepada supir angkot.
+                                        Silahkan isi Saldo EWallet pada tombol Isi Saldo
+                                    </small>
                                 @endif
                             </div>
                         </div>

@@ -23,6 +23,7 @@ class CreateUsersSeeder extends Seeder
             [
                 'name'          => 'admin',
                 'email'         => 'admin@admin.com',
+                'mobile_phone'  => '080000000002',
                 'role'          => 'admin',
                 'password'      => Hash::make('admin'),
                 'created_at'    => date('Y-m-d H:i:s'),
@@ -31,6 +32,7 @@ class CreateUsersSeeder extends Seeder
             [
                 'name'          => 'approval',
                 'email'         => 'approval@approval.com',
+                'mobile_phone'  => '080000000003',
                 'role'          => 'approval',
                 'password'      => Hash::make('approval'),
                 'created_at'    => date('Y-m-d H:i:s'),
@@ -39,6 +41,7 @@ class CreateUsersSeeder extends Seeder
             [
                 'name'          => 'Toufik Ghozali',
                 'email'         => 'tghoz@gmail.com',
+                'mobile_phone'  => '080000000004',
                 'role'          => 'customer',
                 'password'      => Hash::make('customer'),
                 'created_at'    => date('Y-m-d H:i:s'),
@@ -47,6 +50,7 @@ class CreateUsersSeeder extends Seeder
             [
                 'name'          => 'Annisa Sabrina',
                 'email'         => 'annsab@gmail.com',
+                'mobile_phone'  => '080000000005',
                 'role'          => 'customer',
                 'password'      => Hash::make('customer'),
                 'created_at'    => date('Y-m-d H:i:s'),
@@ -133,6 +137,7 @@ class CreateUsersSeeder extends Seeder
         $users = [
             [
                 'name'          => 'director',
+                'mobile_phone'  => '080000000001',
                 'email'         => 'director@angkot.com',
                 'role'          => 'director',
                 'password'      => Hash::make('director'),

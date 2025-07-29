@@ -118,20 +118,34 @@ class TripController extends Controller
             $fare = $this->calculateFare($distance);
         }
 
-        // Kurangi Saldo Customer
-        $cWallet->balance -= $fare;
-        $cWallet->save();
-        
+        if ($cWallet->balance >= $fare) {
+            // Metode pembayaran sistem (saldo cukup)
+            $method = 'system';
+            $operationC = 'minus';
+            $operationP = 'plus';
 
+            $cWallet->balance -= $fare;
+            $cWallet->save();
+        } else {
+            // Saldo tidak mencukupi, bayar tunai
+            $method = 'cash';
+            $operationP = 'cash'; // atau tidak diset sama sekali
+            $operationC = 'cash'; // atau tidak diset sama sekali
+        }
+
+        $trip->update([
+            'payment_method' => $method,
+        ]);
+        
         // Simpan transaksi Customer
         $customerTx = Transaction::create([
             'ewallet_id' => $cWallet->id,
             'type' => 'Payment',
-            'method' => 'System',
-            'operation' => 'minus',
+            'method' => $method,
+            'operation' => $operationC,
             'last_saldo' => $cWallet->balance,
             'amount' => $fare,
-            'description' => "Payment Angkot (ID: {$pWallet->qrcode_string})"
+            'description' => "Trip Payment Angkot (ID: {$pWallet->qrcode_string})"
         ]);
 
         // Tambahkan Saldo Mitra
@@ -142,8 +156,8 @@ class TripController extends Controller
         Transaction::create([
             'ewallet_id' => $pWallet->id,
             'type' => 'Payment',
-            'method' => 'System',
-            'operation' => 'plus',
+            'method' => $method,
+            'operation' => $operationP,
             'last_saldo' => $pWallet->balance,
             'amount' => $fare,
             'description' => "Receive Payment (ID: {$cWallet->qrcode_string})"

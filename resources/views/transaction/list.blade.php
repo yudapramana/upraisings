@@ -43,11 +43,13 @@
                                                 <select name="type" id="type" class="form-select form-select-sm form-control form-control-sm">
                                                     <option value="">Semua Jenis</option>
                                                     @if (Request::segment(1) == 'partner')
-                                                        <option value="plus" {{ request('type') == 'plus' ? 'selected' : '' }}>Penerimaan</option>
+                                                        <option value="cash" {{ request('type') == 'cash' ? 'selected' : '' }}>Penerimaan Cash</option>
+                                                        <option value="plus" {{ request('type') == 'plus' ? 'selected' : '' }}>Penerimaan Ewallet</option>
                                                         <option value="minus" {{ request('type') == 'minus' ? 'selected' : '' }}>Penarikan</option>
                                                     @else
                                                         <option value="plus" {{ request('type') == 'plus' ? 'selected' : '' }}>Top Up</option>
-                                                        <option value="minus" {{ request('type') == 'minus' ? 'selected' : '' }}>Pembayaran</option>
+                                                        <option value="minus" {{ request('type') == 'minus' ? 'selected' : '' }}>Pembayaran EWallet</option>
+                                                        <option value="cash" {{ request('type') == 'cash' ? 'selected' : '' }}>Pembayaran Cash</option>
                                                     @endif
                                                 </select>
                                             </div>
