@@ -87,7 +87,7 @@
                     <div class="col-md-10">
                         <div class="card shadow-sm">
                             <div class="card-body text-center">
-                                <h5 class="card-title">Saldo Angkot</h5>
+                                <h5 class="card-title">EWallet Angkot</h5>
                                 <h3 class="fw-bold text-success">Rp {{ number_format($balance, 2, ',', '.') }}</h3>
                                 <p>Status: <span class="badge bg-success">Aktif</span></p>
                                 <a href="{{ route('partner.withdraw') }}" class="btn btn-success btn-sm">Tarik Saldo</a>
