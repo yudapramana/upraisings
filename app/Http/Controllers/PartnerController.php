@@ -27,19 +27,19 @@ class PartnerController extends Controller
         // Hitung total pendapatan hari ini, minggu ini, dan bulan ini
         $totalToday = Transaction::where('ewallet_id', $wallet->id)
                             ->whereDate('created_at', today())
-                            ->where('operation', 'plus')
+                            ->whereIn('operation', ['plus', 'cash'])
                             ->where('status', 'completed')
                             ->sum('amount');
                     
         $totalWeek = Transaction::where('ewallet_id', $wallet->id)
                             ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
-                            ->where('operation', 'plus')
+                            ->whereIn('operation', ['plus', 'cash'])
                             ->where('status', 'completed')
                             ->sum('amount');
 
         $totalMonth = Transaction::where('ewallet_id', $wallet->id)
                             ->whereMonth('created_at', now()->month)
-                            ->where('operation', 'plus')
+                            ->whereIn('operation', ['plus', 'cash'])
                             ->where('status', 'completed')
                             ->sum('amount');
 
