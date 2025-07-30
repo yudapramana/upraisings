@@ -124,8 +124,13 @@ class TripController extends Controller
             $operationC = 'minus';
             $operationP = 'plus';
 
+            // Kurangi Saldo Customer
             $cWallet->balance -= $fare;
             $cWallet->save();
+
+            // Tambahkan Saldo Mitra
+            $pWallet->balance += $fare;
+            $pWallet->save();
         } else {
             // Saldo tidak mencukupi, bayar tunai
             $method = 'cash';
@@ -148,9 +153,7 @@ class TripController extends Controller
             'description' => "Trip Payment Angkot (ID: {$pWallet->qrcode_string})"
         ]);
 
-        // Tambahkan Saldo Mitra
-        $pWallet->balance += $fare;
-        $pWallet->save();
+        
 
         // Simpan transaksi
         Transaction::create([
