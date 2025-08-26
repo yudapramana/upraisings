@@ -17,6 +17,7 @@
         "yajra/laravel-datatables-oracle": "^10.11"
     },
     "require-dev": {
+        "beyondcode/laravel-er-diagram-generator": "^5.0",
         "fakerphp/faker": "^1.9.1",
         "kevincobain2000/laravel-erd": "^1.7",
         "laravel/pint": "^1.0",

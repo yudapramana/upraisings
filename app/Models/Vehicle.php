@@ -13,6 +13,8 @@ class Vehicle extends Model
 
     // Relasi ke User (pemilik kendaraan)
     public function user()
+
+    
     {
         return $this->belongsTo(User::class);
     }
